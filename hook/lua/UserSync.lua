@@ -36,6 +36,10 @@ function OnSync()
         --import('/lua/ui/game/multifunction.lua').FocusArmyChanged()
     end
 
+    if Sync.Events then
+        import(modScripts .. 'score_events.lua').UpdateEvents(Sync.Events)
+    end 
+
     if not table.empty(Sync.Score) then
         import(modScripts .. 'score_board.lua').currentScores = Sync.Score
         --import('/lua/ui/game/score.lua').currentScores = Sync.Score

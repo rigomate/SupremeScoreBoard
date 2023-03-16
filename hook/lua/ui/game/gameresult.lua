@@ -46,6 +46,8 @@ local stats = { done = false, players = {}, fallens = {}, killers = {} }
  
 function DoGameResult(armyID, result)
     
+    -- Get Events which have been synced to Supreme ScoreBoard via the Usersync
+    local currentEvents = import(modScripts..'score_events.lua').CurrentEvents
     local armies = GetArmiesTable().armiesTable
     local armyName = armies[armyID].nickname or 'civilian' 
     log.Trace('GameResults: result = ' .. result .. ', armyID = ' .. armyID..', name = ' .. armyName)
@@ -100,6 +102,8 @@ function DoGameResult(armyID, result)
     if result == 'defeat' then 
         local losersID = armyID
         local winnerID = nil
+
+        -- this is lookup for killers which was used before game version 3741, watching old replays still need this method
         for id, present in stats.killers do
             if id ~= armyID and present then 
                 winnerID = id 
@@ -109,6 +113,15 @@ function DoGameResult(armyID, result)
         if not winnerID then
            winnerID = losersID -- player did CTRL+K
         end
+
+        -- after the game version 3756 this becomes relevant as the Sync.Events holds the info about who killed who
+        local acuDestroyed = currentEvents.ACUDestroyed or {}
+        for i,acu in pairs(acuDestroyed) do
+            if acu.KilledArmy == losersID then
+                winnerID = acu.InstigatorArmy
+            end
+        end
+
         local losersName = armies[losersID].nickname or 'armies[' .. losersID ..'].name = nil'
         local winnerName = armies[winnerID].nickname or 'armies[' .. winnerID ..'].name = nil'
         log.Trace('GameResults: ' .. tostring(losersName) .. message .. tostring(winnerName))
