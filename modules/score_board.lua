@@ -13,7 +13,7 @@
  
  -- USE A:\Users\Husar\Desktop\TMP\textures\ui\common\game\replay slider-ticks_bmp.dds
 
-local modPath = '/mods/SupremeScoreBoard/' 
+local modPath = '/mods/SupremeScoreBoard2/' 
 local modScripts  = modPath..'modules/'
 local modTextures = modPath..'textures/'
 local modInfo  = import(modPath..'mod_info.lua')

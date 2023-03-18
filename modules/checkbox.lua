@@ -1,7 +1,7 @@
 ------------------------------------------------------
 -- HUSSAR moved code in HandleEvent(event)
 
-local modPath = '/mods/SupremeScoreBoard/' 
+local modPath = '/mods/SupremeScoreBoard2/' 
 local modScripts  = modPath..'modules/'
 
 local Bitmap  = import(modScripts..'bitmap.lua').Bitmap

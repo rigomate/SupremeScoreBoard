@@ -1,4 +1,4 @@
-local modPath = '/mods/SupremeScoreBoard/'
+local modPath = '/mods/SupremeScoreBoard2/'
 local modTextures = modPath..'textures/'
 local modScripts  = modPath..'modules/'
 
@@ -19,7 +19,7 @@ function OnSync()
 
         --import('/lua/ui/game/score.lua').sharedScores = Sync.Score
         --import('/lua/ui/game/score.lua').SharedScore = Sync.SharedScore
-        --import('/mods/SupremeScoreBoard/lua/ui/game/score.lua').sharedScores = Sync.SharedScore
+        --import('/mods/SupremeScoreBoard2/lua/ui/game/score.lua').sharedScores = Sync.SharedScore
         --import('/lua/ui/game/score.lua').sharedScores = Sync.SharedScore
         --import('/mods/ecoInfo/modules/ecoinfoUi.lua').updateMultipleUIs(Sync.updateEcoInfoPanels)
     end

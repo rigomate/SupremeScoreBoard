@@ -2,14 +2,14 @@
 --  File:    /LUA/modules/score_manager.lua
 --  Author:  HUSSAR
 --  Summary: Provides additional info about score, armies, teams and other data
---  Copyright © 2016 HUSSAR All rights reserved.
+--  Copyright ï¿½ 2016 HUSSAR All rights reserved.
 -- ##########################################################################################
 --  NOTE: Contact HUSSAR, in case you are trying to 
 --        implement/port this mod to latest version of FAF patch
 -- http://forums.faforever.com/forums/memberlist.php?mode=viewprofile&u=9827
 -- ##########################################################################################
  
-local modPath = '/mods/SupremeScoreBoard/'
+local modPath = '/mods/SupremeScoreBoard2/'
 local modTextures = modPath..'textures/'
 local modScripts  = modPath..'modules/'
 local modInfo  = import(modPath..'mod_info.lua')

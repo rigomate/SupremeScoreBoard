@@ -1,4 +1,4 @@
-local modPath = '/mods/SupremeScoreBoard/'
+local modPath = '/mods/SupremeScoreBoard2/'
 local modTextures = modPath..'textures/'
 local modScripts  = modPath..'modules/'
  
