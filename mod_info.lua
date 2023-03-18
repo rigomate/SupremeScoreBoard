@@ -1,6 +1,6 @@
 name         = "Supreme Score Board"
 version      = 6
-uid          = "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0060"
+uid          = "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0061"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover"
@@ -33,6 +33,7 @@ conflicts   = {
     "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0030", -- old SSB
     "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0040", -- old SSB
     "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0050", -- old SSB
+    "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0060", -- old SSB
     "HUSSAR-pl-a1e2-c4t4-scfa-SETmod-v0100",
     "HUSSAR-PL-a1e2-c4t4-scfa-SUImod-v0900", -- old SUI v0.9
     }
@@ -66,6 +67,9 @@ after = {
 -]] 
 
 history = [[
+
+### Version 6.1 - March 18, 2023
+- Fixed kill notification, which got broken after game patch 3741, starting from game patch 3756 it will work again
 
 ### Version 4-6 - November 12, 2020
 - added economy income of allied players in game session
