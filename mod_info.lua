@@ -1,10 +1,10 @@
 name         = "Supreme Score Board2"
-version      = 8
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0080"
+version      = 9
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0090"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
-description  = "Improves score board in Game and in Replay sessions by adding team stats, stats about allies eco, sending eco to allies, killed-by notifications, stats about reclaim, kill-ratio, info about game being rated or not, and more. All Credits go to HUSSAR, who created this mod"
+description  = "Difference to normal Supreme Score Board: Kill notifications work again with game version 3756 and higher. Improves score board in Game and in Replay sessions by adding team stats, stats about allies eco, sending eco to allies, killed-by notifications, stats about reclaim, kill-ratio, info about game being rated or not, and more. All Credits go to HUSSAR, who created this mod"
 
 icon         = "/mods/SupremeScoreBoard2/mod_icon.png"
 url          = "http://forums.faforever.com/viewtopic.php?f=41&t=10887"
@@ -34,6 +34,7 @@ conflicts   = {
     "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0040", -- old SSB
     "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0050", -- old SSB
     "HUSSAR-PL-a1e2-c4t4-scfa-ssbmod-v0060", -- old SSB
+    "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0080",  -- old SSB
     "HUSSAR-pl-a1e2-c4t4-scfa-SETmod-v0100",
     "HUSSAR-PL-a1e2-c4t4-scfa-SUImod-v0900", -- old SUI v0.9
     }

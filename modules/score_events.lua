@@ -6,8 +6,5 @@ local UIUtil = import('/lua/ui/uiutil.lua')
 
 CurrentEvents = {}
 function UpdateEvents(newEvents)
-    log.Trace('updating')
     CurrentEvents = newEvents
-    log.Trace(CurrentEvents.ACUDestroyed[1].KilledArmy)
-    log.Trace(CurrentEvents.ACUDestroyed[1].InstigatorArmy)
 end

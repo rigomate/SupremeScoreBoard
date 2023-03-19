@@ -70,6 +70,7 @@ function DoGameResult(armyID, result)
     local split = str.split(result, ' ')
     local value  = tonumber(split[2])
     local result = tostring(split[1]) 
+
   
     if result == 'score' then --and stats.players[armyID].score < value then
         stats.killers[armyID] = true
@@ -98,6 +99,24 @@ function DoGameResult(armyID, result)
     else 
         message = ' '.. LOC(MyArmyResultStrings[result]) .. ' '
     end
+
+    local whokilledwho = {}
+    local acuDestroyed = currentEvents.ACUDestroyed or {}
+    for i,acu in pairs(acuDestroyed) do
+        whokilledwho[acu.KilledArmy] = acu.InstigatorArmy
+    end
+
+    -- after the game version 3741 there is no result == "draw anymore", starting with game version 3756 it can be however done again with the following code
+    local killerId = whokilledwho[armyID] or nil
+    if whokilledwho[killerId] == armyID then
+        if armyID ~= GetFocusArmy() then
+            message = ' '.. LOC(OtherArmyResultStrings["draw"]).. ' ' 
+        else 
+            message = ' '.. LOC(MyArmyResultStrings["draw"]) .. ' '
+        end        
+        AnnounceDraw(armyID, message, killerId)
+        result = "drawnew"
+    end
     
     if result == 'defeat' then 
         local losersID = armyID
@@ -115,11 +134,8 @@ function DoGameResult(armyID, result)
         end
 
         -- after the game version 3756 this becomes relevant as the Sync.Events holds the info about who killed who
-        local acuDestroyed = currentEvents.ACUDestroyed or {}
-        for i,acu in pairs(acuDestroyed) do
-            if acu.KilledArmy == losersID then
-                winnerID = acu.InstigatorArmy
-            end
+        if whokilledwho[losersID] ~= nil then
+            winnerID = whokilledwho[losersID]
         end
 
         local losersName = armies[losersID].nickname or 'armies[' .. losersID ..'].name = nil'
