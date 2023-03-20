@@ -1266,7 +1266,7 @@ function CreateInfoLine(armyID)
     end    
     
     if modInfo.version and modInfo.author then
-        local info = 'SSB' .. string.format(" v%01.1f ", modInfo.version)
+        local info = 'SSB2' .. string.format(" v%01.1f ", modInfo.version)
         group.version = UIUtil.CreateText(center, info, fontSize, fontName)
         --group.version:DisableHitTest()
         group.version:SetColor('FF5E5E5E') --#FF5E5E5E  

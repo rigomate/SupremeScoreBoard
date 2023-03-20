@@ -90,6 +90,7 @@ function DoGameResultBetween(armyID, result)
     end
 end
 
+-- untouched vanilla version of SSB
 function DoGameResultLegacy(armyID, result)
     local armies = GetArmiesTable().armiesTable
     local armyName = armies[armyID].nickname or 'civilian' 
