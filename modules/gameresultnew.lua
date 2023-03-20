@@ -26,6 +26,7 @@ function DoGameResultNew(armyID, result, currentEvents, _Resultstring, _Announce
     local message = ''
 
     local killerId = whokilledwho[armyID]
+
     if whokilledwho[killerId] == armyID then
         -- check if draw has been notified before
         if drawnotified[armyID] == nil and drawnotified[killerId] == nil then
@@ -38,6 +39,7 @@ function DoGameResultNew(armyID, result, currentEvents, _Resultstring, _Announce
         message = ' '.. LOC(Resultstring['defeat']).. ' ' 
         _Announces.AnnounceDeath(armyID, message, killerId)
     else
+
         -- ctrl + k
         message = ' killed by suicide '
         _Announces.AnnounceDeath(armyID, message, armyID)

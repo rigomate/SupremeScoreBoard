@@ -85,98 +85,69 @@ table.insert(acuDestroyed, {
 -- Test is run here
 -- first assert function
 
-function testCheckIfVictoryExits()
-    local AnnounceDeathCalled = false
-    local AnnounceDrawCalled = false
-    function AnnounceDeath(armyID, message, killerId)
-        AnnounceDeathCalled = true
-    end
-    function AnnounceDraw(armyID, message, killerId)
-        AnnounceDrawCalled = true
+
+TestGameresult = {}
+    TestGameresult.Announces = {}
+    function TestGameresult:setUp()
+        TestGameresult.AnnounceDeathCalled = false
+        TestGameresult.AnnounceDrawCalled = false
+        Resetdrawnotified()
+        
+        function AnnounceDeath(armyID, message, killerId)
+            TestGameresult.AnnounceDeathCalled = true
+        end
+        function AnnounceDraw(armyID, message, killerId)
+            TestGameresult.AnnounceDrawCalled = true
+        end
+        
+        TestGameresult.Announces.AnnounceDeath = AnnounceDeath
+        TestGameresult.Announces.AnnounceDraw = AnnounceDraw
     end
 
-    DoGameResultNew(1, 'victory', events, ResultStrings, Announces)
-    luaunit.assert_false(AnnounceDeathCalled)
-    luaunit.assert_false(AnnounceDrawCalled)
+    function TestGameresult:testCheckIfVictoryExits()
+        DoGameResultNew(1, 'victory', events, ResultStrings, TestGameresult.Announces)
+        luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
+        luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
+    end
+
+    function TestGameresult:testCheckDefeat()
+        DoGameResultNew(1, 'defeat', events, ResultStrings, TestGameresult.Announces)
+
+        luaunit.assert_true(TestGameresult.AnnounceDeathCalled)
+    end
+
+
+    function TestGameresult:testCheckDefeat2()
+        DoGameResultNew(2, 'defeat', events, ResultStrings, TestGameresult.Announces)
+
+        luaunit.assert_true(TestGameresult.AnnounceDeathCalled)
+    end
+
+    function TestGameresult:testDraw()
+        print("testDraw")
+        DoGameResultNew(10, 'defeat', events, ResultStrings, TestGameresult.Announces)
+
+        luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
+        luaunit.assert_true(TestGameresult.AnnounceDrawCalled)
+    end
+
+    function TestGameresult:testDrawOnlyOnce()
+        print("testDrawOnlyOnce")
+        DoGameResultNew(10, 'defeat', events, ResultStrings, TestGameresult.Announces)
+        luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
+        luaunit.assert_true(TestGameresult.AnnounceDrawCalled)
     
-end
-
-
-function testCheckDefeat()
-    local AnnounceDeathCalled = false
-    function AnnounceDeath(armyID, message, killerId)
-        AnnounceDeathCalled = true
-        luaunit.assert_equals(1, armyID)
-        luaunit.assert_equals(2, killerId)
-    end
-    Announces.AnnounceDeath = AnnounceDeath
-
-    DoGameResultNew(1, 'defeat', events, ResultStrings, Announces)
-
-    luaunit.assert_true(AnnounceDeathCalled)
-end
-
-function testCheckDefeat2()
-    local AnnounceDeathCalled = false
-    function AnnounceDeath(armyID, message, killerId)
-        AnnounceDeathCalled = true
-        luaunit.assert_equals(2, armyID)
-        luaunit.assert_equals(3, killerId)
-    end
-    Announces.AnnounceDeath = AnnounceDeath
-
-    DoGameResultNew(2, 'defeat', events, ResultStrings, Announces)
-
-    luaunit.assert_true(AnnounceDeathCalled)
-end
-
-function testCheckDraw()
-    -- reset this
-    Resetdrawnotified()
-    local AnnounceDeathCalled = false
-    local AnnounceDrawCalled = false
-    function AnnounceDeath(armyID, message, killerId)
-        AnnounceDeathCalled = true
-    end
-    Announces.AnnounceDeath = AnnounceDeath
-    function AnnounceDraw(armyID, message, killerId)
-        AnnounceDrawCalled = true
-    end
-    Announces.AnnounceDraw = AnnounceDraw
-
-    DoGameResultNew(10, 'defeat', events, ResultStrings, Announces)
-
-    luaunit.assert_false(AnnounceDeathCalled)
-    luaunit.assert_true(AnnounceDrawCalled) 
-end
-
-function testCheckDrawOnlyOnce()
-    -- reset this
-    Resetdrawnotified()
-    local AnnounceDeathCalled = false
-    local AnnounceDrawCalled = false
-    function AnnounceDeath(armyID, message, killerId)
-        AnnounceDeathCalled = true
-    end
-    Announces.AnnounceDeath = AnnounceDeath
-    function AnnounceDraw(armyID, message, killerId)
-        AnnounceDrawCalled = true
-    end
-    Announces.AnnounceDraw = AnnounceDraw
+        TestGameresult.AnnounceDeathCalled = false
+        TestGameresult.AnnounceDrawCalled = false
     
-    DoGameResultNew(10, 'defeat', events, ResultStrings, Announces)
-
-    luaunit.assert_false(AnnounceDeathCalled)
-    luaunit.assert_true(AnnounceDrawCalled)
-
-    AnnounceDrawCalled = false
-
-    DoGameResultNew(11, 'defeat', events, ResultStrings, Announces)
-    luaunit.assert_false(AnnounceDeathCalled)
-    luaunit.assert_false(AnnounceDrawCalled)
-end
+        DoGameResultNew(11, 'defeat', events, ResultStrings, TestGameresult.Announces)
+        luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
+        luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
+    end
 
 
+    function TestGameresult:tearDown()
+    end
 
 function testCheckNoKillSyncedThereforeSuicide()
     -- reset these
@@ -201,12 +172,52 @@ function testCheckNoKillSyncedThereforeSuicide()
 
     luaunit.assert_true(AnnounceDeathCalled)
     luaunit.assert_false(AnnounceDrawCalled)
-
 end
 
+function testCheckKillthenDraw()
+    -- reset these
+    acuDestroyed = {} 
+    events.ACUDestroyed = acuDestroyed
+
+    table.insert(acuDestroyed, {
+        Timestamp = 234,
+        InstigatorArmy = 10,
+        KilledArmy = 11
+    })
+
+    Resetdrawnotified()
+    local AnnounceDeathCalled = false
+    local AnnounceDrawCalled = false
+    function AnnounceDeath(armyID, message, killerId)
+        AnnounceDeathCalled = true
+        luaunit.assert_equals(armyID, killerId)
+        luaunit.assertEquals(' killed by suicide ', message)
+    end
+    Announces.AnnounceDeath = AnnounceDeath
+    function AnnounceDraw(armyID, message, killerId)
+        AnnounceDrawCalled = true
+    end
+    Announces.AnnounceDraw = AnnounceDraw
+
+    DoGameResultNew(10, 'defeat', events, ResultStrings, Announces)
 
 
+    luaunit.assert_true(AnnounceDeathCalled)
+    luaunit.assert_false(AnnounceDrawCalled)
 
+    AnnounceDeathCalled = false
+
+    table.insert(acuDestroyed, {
+        Timestamp = 234,
+        InstigatorArmy = 11,
+        KilledArmy = 10
+    })
+
+    DoGameResultNew(11, 'defeat', events, ResultStrings, Announces)
+
+    luaunit.assert_false(AnnounceDeathCalled)
+    luaunit.assert_true(AnnounceDrawCalled)
+end
 
 
 
