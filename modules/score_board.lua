@@ -2741,6 +2741,22 @@ function AnnounceDeath(losersID, text, winnerID)
                  
     end
 end
+function AnnounceDeathUnknown(losersID, text)
+    local armyLine = GetArmyLine(losersID) 
+    local losers = Stats.armies[losersID] 
+      
+    if armyLine and losers.namefull then
+        log.Trace('AnnounceDeath ' .. losers.namefull .. ' '.. text)
+        local message = { value = text }
+        local sender = { value = losers.namefull, fontColor = losers.color, icon = losers.icon }
+
+
+        Announcement.CreateSmartAnnouncement(armyLine, sender, message, nil)
+        --PlaySound(Sound({Bank = 'Interface', Cue = 'UI_END_Game_Fail'}))        
+        --PlayVoice(Sound({ Bank='XGG', Cue='XGG_Computer_CV01_05115' }))
+                 
+    end
+end
 function AnnounceDraw(armyID1, text, armyID2)
     local armyLine = GetArmyLine(armyID1) 
     local army1 = Stats.armies[armyID1] 

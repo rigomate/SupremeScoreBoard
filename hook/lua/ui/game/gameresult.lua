@@ -15,9 +15,10 @@ local UIUtil = import('/lua/ui/uiutil.lua')
 --local AnnounceDeath     = import('/lua/ui/game/score.lua').AnnounceDeath
 --local AnnounceDraw      = import('/lua/ui/game/score.lua').AnnounceDraw
 --local AnnounceVictory   = import('/lua/ui/game/score.lua').AnnounceVictory
-local AnnounceDeath     = import(modScripts..'score_board.lua').AnnounceDeath
-local AnnounceDraw      = import(modScripts..'score_board.lua').AnnounceDraw
-local AnnounceVictory   = import(modScripts..'score_board.lua').AnnounceVictory
+local AnnounceDeath        = import(modScripts..'score_board.lua').AnnounceDeath
+local AnnounceDeathUnknown = import(modScripts..'score_board.lua').AnnounceDeathUnknown
+local AnnounceDraw         = import(modScripts..'score_board.lua').AnnounceDraw
+local AnnounceVictory      = import(modScripts..'score_board.lua').AnnounceVictory
   
 local OtherArmyResultStrings = {
     --TODO add localization tags and update strings when integrating with FAF
@@ -48,14 +49,19 @@ local stats = { done = false, players = {}, fallens = {}, killers = {} }
 
 function DoGameResult(armyID, result)
     log.Trace('armyID is = ' .. armyID .. ' result is: ' .. result)
+
     local version = import('/lua/version.lua').GetVersion()
+    version = tonumber(version)
+    
     if version >= 3756 then
         log.Trace('Version is = ' .. version .. ' : therefore using new kill notificiation')
         DoGameResultNew(armyID, result)
-
     elseif version < 3741 then
-        log.Trace('Version is = ' .. version .. ' : therefore using new old kill notification')
-        -- DoGameResultLegacy(armyID, result)
+        log.Trace('Version is = ' .. version .. ' : therefore using old kill notification')
+        DoGameResultLegacy(armyID, result)
+    else
+        log.Trace('Version is = ' .. version .. ' : therefore kill notification is uncertain')
+        DoGameResultBetween(armyID, result)
     end
 end
 
@@ -104,6 +110,16 @@ function DoGameResultNew(armyID, result)
         -- ctrl + k
         message = ' killed by suicide '
         AnnounceDeath(armyID, message, armyID)
+    end
+end
+
+function DoGameResultBetween(armyID, result)
+    local split = str.split(result, ' ')
+    local value  = tonumber(split[2])
+    local result = tostring(split[1]) 
+    
+    if result == 'defeat' then
+        AnnounceDeathUnknown(armyID, 'has died')
     end
 end
 

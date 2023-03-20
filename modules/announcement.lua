@@ -3,7 +3,7 @@
 --* Author: Ted Snook, HUSSAR
 --* Summary: Announcement UI for sending general messages to the user
 --*
---* Copyright © 2007 Gas Powered Games, Inc.  All rights reserved.
+--* Copyright ï¿½ 2007 Gas Powered Games, Inc.  All rights reserved.
 --*****************************************************************************
 
 local UIUtil = import('/lua/ui/uiutil.lua')
