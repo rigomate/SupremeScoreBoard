@@ -19,6 +19,12 @@ local AnnounceDeath        = import(modScripts..'score_board.lua').AnnounceDeath
 local AnnounceDeathUnknown = import(modScripts..'score_board.lua').AnnounceDeathUnknown
 local AnnounceDraw         = import(modScripts..'score_board.lua').AnnounceDraw
 local AnnounceVictory      = import(modScripts..'score_board.lua').AnnounceVictory
+
+local Announces = {}
+Announces.AnnounceDeath        = AnnounceDeath
+Announces.AnnounceDeathUnknown = AnnounceDeathUnknown
+Announces.AnnounceDraw         = AnnounceDraw
+Announces.AnnounceVictory      = AnnounceVictory
   
 local OtherArmyResultStrings = {
     --TODO add localization tags and update strings when integrating with FAF
@@ -36,6 +42,7 @@ local MyArmyResultStrings = {
     replay  = "Replay Finished.",           -- <LOC GAMERESULT_0003>
 }
 
+
 function OnReplayEnd()
     LOG('GAMERESULTS... OnReplayEnd' )
    
@@ -52,72 +59,32 @@ function DoGameResult(armyID, result)
 
     local version = import('/lua/version.lua').GetVersion()
     version = tonumber(version)
-    
+
+    local str  = import(modScripts..'ext.strings.lua')
+    local split = str.split(result, ' ')
+    local resultsplitted = tostring(split[1]) 
+
+    -- need to decouple DoGameResultNew for unit testing
+    ResultStrings = {}
+    ResultStrings.OtherArmy = OtherArmyResultStrings
+    ResultStrings.MyArmy = MyArmyResultStrings
+
     if version >= 3756 then
         log.Trace('Version is = ' .. version .. ' : therefore using new kill notificiation')
-        DoGameResultNew(armyID, result)
+        local currentEvents = import(modScripts..'score_events.lua').CurrentEvents
+        local DoGameResultNew = import(modScripts..'gameresultnew.lua').DoGameResultNew
+        DoGameResultNew(armyID, resultsplitted, currentEvents, ResultStrings, Announces)
     elseif version < 3741 then
         log.Trace('Version is = ' .. version .. ' : therefore using old kill notification')
         DoGameResultLegacy(armyID, result)
     else
         log.Trace('Version is = ' .. version .. ' : therefore kill notification is uncertain')
-        DoGameResultBetween(armyID, result)
+        DoGameResultBetween(armyID, resultsplitted)
     end
 end
 
-local drawnotified = {}
 
-function DoGameResultNew(armyID, result)
-    -- Get Events which have been synced to Supreme ScoreBoard via the Usersync
-    local currentEvents = import(modScripts..'score_events.lua').CurrentEvents
-    
-    local split = str.split(result, ' ')
-    local value  = tonumber(split[2])
-    local result = tostring(split[1]) 
-
-    if result == 'victory' then
-    return
-    end
-
-    local whokilledwho = {}
-    local acuDestroyed = currentEvents.ACUDestroyed or {}
-    for i,acu in pairs(acuDestroyed) do
-        whokilledwho[acu.KilledArmy] = acu.InstigatorArmy
-    end
-
-    local Resultstring = {}
-    if armyID ~= GetFocusArmy() then
-        Resultstring = OtherArmyResultStrings
-    else 
-        Resultstring = MyArmyResultStrings
-    end   
-
-    local message = ''
-
-    local killerId = whokilledwho[armyID]
-    if whokilledwho[killerId] == armyID then
-        -- check if draw has been notified before
-        if drawnotified[armyID] == nil and drawnotified[killerId] == nil then
-            message = ' '.. LOC(Resultstring['draw']).. ' ' 
-            AnnounceDraw(armyID, message, killerId)
-            drawnotified[armyID] = true
-            drawnotified[killerId] = true
-        end
-    elseif killerId ~= nil then
-        message = ' '.. LOC(Resultstring['defeat']).. ' ' 
-        AnnounceDeath(armyID, message, killerId)
-    else
-        -- ctrl + k
-        message = ' killed by suicide '
-        AnnounceDeath(armyID, message, armyID)
-    end
-end
-
-function DoGameResultBetween(armyID, result)
-    local split = str.split(result, ' ')
-    local value  = tonumber(split[2])
-    local result = tostring(split[1]) 
-    
+function DoGameResultBetween(armyID, result)    
     if result == 'defeat' then
         AnnounceDeathUnknown(armyID, 'has died')
     end
