@@ -5,7 +5,7 @@
 --* Copyright © 2006 Gas Powered Games, Inc.  All rights reserved.
 --*****************************************************************************
 
-local modPath = '/mods/SupremeScoreBoard2/' 
+local modPath = '/mods/SupremeScoreBoard2/'
 local modScripts  = modPath..'modules/'
 local str  = import(modScripts..'ext.strings.lua')
 local log  = import(modScripts..'ext.logging.lua')
@@ -44,10 +44,70 @@ end
  
 local stats = { done = false, players = {}, fallens = {}, killers = {} }
  
+   
+
 function DoGameResult(armyID, result)
-    
+    log.Trace('armyID is = ' .. armyID .. ' result is: ' .. result)
+    local version = import('/lua/version.lua').GetVersion()
+    if version >= 3756 then
+        log.Trace('Version is = ' .. version .. ' : therefore using new kill notificiation')
+        DoGameResultNew(armyID, result)
+
+    elseif version < 3741 then
+        log.Trace('Version is = ' .. version .. ' : therefore using new old kill notification')
+        -- DoGameResultLegacy(armyID, result)
+    end
+end
+
+local drawnotified = {}
+
+function DoGameResultNew(armyID, result)
     -- Get Events which have been synced to Supreme ScoreBoard via the Usersync
     local currentEvents = import(modScripts..'score_events.lua').CurrentEvents
+    
+    local split = str.split(result, ' ')
+    local value  = tonumber(split[2])
+    local result = tostring(split[1]) 
+
+    if result == 'victory' then
+    return
+    end
+
+    local whokilledwho = {}
+    local acuDestroyed = currentEvents.ACUDestroyed or {}
+    for i,acu in pairs(acuDestroyed) do
+        whokilledwho[acu.KilledArmy] = acu.InstigatorArmy
+    end
+
+    local Resultstring = {}
+    if armyID ~= GetFocusArmy() then
+        Resultstring = OtherArmyResultStrings
+    else 
+        Resultstring = MyArmyResultStrings
+    end   
+
+    local message = ''
+
+    local killerId = whokilledwho[armyID]
+    if whokilledwho[killerId] == armyID then
+        -- check if draw has been notified before
+        if drawnotified[armyID] == nil and drawnotified[killerId] == nil then
+            message = ' '.. LOC(Resultstring['draw']).. ' ' 
+            AnnounceDraw(armyID, message, killerId)
+            drawnotified[armyID] = true
+            drawnotified[killerId] = true
+        end
+    elseif killerId ~= nil then
+        message = ' '.. LOC(Resultstring['defeat']).. ' ' 
+        AnnounceDeath(armyID, message, killerId)
+    else
+        -- ctrl + k
+        message = ' killed by suicide '
+        AnnounceDeath(armyID, message, armyID)
+    end
+end
+
+function DoGameResultLegacy(armyID, result)
     local armies = GetArmiesTable().armiesTable
     local armyName = armies[armyID].nickname or 'civilian' 
     log.Trace('GameResults: result = ' .. result .. ', armyID = ' .. armyID..', name = ' .. armyName)
@@ -70,7 +130,6 @@ function DoGameResult(armyID, result)
     local split = str.split(result, ' ')
     local value  = tonumber(split[2])
     local result = tostring(split[1]) 
-
   
     if result == 'score' then --and stats.players[armyID].score < value then
         stats.killers[armyID] = true
@@ -100,58 +159,32 @@ function DoGameResult(armyID, result)
         message = ' '.. LOC(MyArmyResultStrings[result]) .. ' '
     end
 
-    local whokilledwho = {}
-    local acuDestroyed = currentEvents.ACUDestroyed or {}
-    for i,acu in pairs(acuDestroyed) do
-        whokilledwho[acu.KilledArmy] = acu.InstigatorArmy
-    end
-
-    -- after the game version 3741 there is no result == "draw anymore", starting with game version 3756 it can be however done again with the following code
-    local killerId = whokilledwho[armyID] or nil
-    if whokilledwho[killerId] == armyID then
-        if armyID ~= GetFocusArmy() then
-            message = ' '.. LOC(OtherArmyResultStrings["draw"]).. ' ' 
-        else 
-            message = ' '.. LOC(MyArmyResultStrings["draw"]) .. ' '
-        end        
-        AnnounceDraw(armyID, message, killerId)
-        result = "drawnew"
-    end
-    
-    if result == 'defeat' then 
+    if result == 'defeat' then
         local losersID = armyID
         local winnerID = nil
-
-        -- this is lookup for killers which was used before game version 3741, watching old replays still need this method
         for id, present in stats.killers do
-            if id ~= armyID and present then 
-                winnerID = id 
+            if id ~= armyID and present then
+                winnerID = id
                 break
             end
         end
         if not winnerID then
            winnerID = losersID -- player did CTRL+K
         end
-
-        -- after the game version 3756 this becomes relevant as the Sync.Events holds the info about who killed who
-        if whokilledwho[losersID] ~= nil then
-            winnerID = whokilledwho[losersID]
-        end
-
         local losersName = armies[losersID].nickname or 'armies[' .. losersID ..'].name = nil'
         local winnerName = armies[winnerID].nickname or 'armies[' .. winnerID ..'].name = nil'
         log.Trace('GameResults: ' .. tostring(losersName) .. message .. tostring(winnerName))
-        
+
         stats.fallens[losersID] = true
 
         stats.players[winnerID].kills[losersID] = true
         stats.players[winnerID].score = stats.players[winnerID].score - 1
         if stats.players[winnerID].score < 1 then
            stats.killers[winnerID] = false
-        end        
+        end
         AnnounceDeath(losersID, message, winnerID)
 
-    elseif result == 'draw' and not stats.fallens[armyID] then 
+    elseif result == 'draw' and not stats.fallens[armyID] then
         local armyName = armies[armyID].nickname  or 'armies[' .. armyID ..'] = nil'
         log.Trace('GameResults: DRAW ' .. tostring(value) .. ' ' .. armyName)
         local drawingID1 = armyID
