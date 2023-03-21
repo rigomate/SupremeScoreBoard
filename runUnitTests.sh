@@ -2,4 +2,4 @@
 
 pushd unittest
 
-lua test_gameresult.lua
+lua test_gameresult.lua -v
