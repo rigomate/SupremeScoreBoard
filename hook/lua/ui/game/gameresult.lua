@@ -53,6 +53,7 @@ end
 local stats = { done = false, players = {}, fallens = {}, killers = {} }
  
    
+local orgDoGameResult = DoGameResult
 
 function DoGameResult(armyID, result)
     log.Trace('armyID is = ' .. armyID .. ' result is: ' .. result)
@@ -74,6 +75,9 @@ function DoGameResult(armyID, result)
         local currentEvents = import(modScripts..'score_events.lua').CurrentEvents
         local DoGameResultNew = import(modScripts..'gameresultnew.lua').DoGameResultNew
         DoGameResultNew(armyID, resultsplitted, currentEvents, ResultStrings, Announces)
+        if (resultsplitted == 'victory') then
+            orgDoGameResult(armyID, result)
+        end
     elseif version < 3741 then
         log.Trace('Version is = ' .. version .. ' : therefore using old kill notification')
         DoGameResultLegacy(armyID, result)
