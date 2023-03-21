@@ -10,6 +10,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install lua
-        run: apt install lua5.1
+        run: sudo apt install lua5.1
       - name: Run Unit Tests
         run: "bash ./runUnitTests.sh"
