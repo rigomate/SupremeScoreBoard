@@ -99,9 +99,13 @@ TestGameresult = {}
         function AnnounceDraw(armyID, message, killerId)
             TestGameresult.AnnounceDrawCalled = true
         end
+        function AnnounceVictory(armyID, message)
+            TestGameresult.AnnounceVictoryCalled = true
+        end
         
-        TestGameresult.Announces.AnnounceDeath = AnnounceDeath
-        TestGameresult.Announces.AnnounceDraw = AnnounceDraw
+        TestGameresult.Announces.AnnounceDeath   = AnnounceDeath
+        TestGameresult.Announces.AnnounceDraw    = AnnounceDraw
+        TestGameresult.Announces.AnnounceVictory = AnnounceVictory
     end
 
     function TestGameresult:testCheckIfVictoryExits()
@@ -124,7 +128,6 @@ TestGameresult = {}
     end
 
     function TestGameresult:testDraw()
-        print("testDraw")
         DoGameResultNew(10, 'defeat', events, ResultStrings, TestGameresult.Announces)
 
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
@@ -132,7 +135,6 @@ TestGameresult = {}
     end
 
     function TestGameresult:testDrawOnlyOnce()
-        print("testDrawOnlyOnce")
         DoGameResultNew(10, 'defeat', events, ResultStrings, TestGameresult.Announces)
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_true(TestGameresult.AnnounceDrawCalled)
@@ -143,6 +145,28 @@ TestGameresult = {}
         DoGameResultNew(11, 'defeat', events, ResultStrings, TestGameresult.Announces)
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
+    end
+
+    function TestGameresult:testVictory()
+        function AnnounceVictoryMock(armyID, Resultstring)
+            luaunit.assert_equals(Resultstring, MyArmyResultStrings.victory)
+        end
+        TestGameresult.Announces.AnnounceVictory = AnnounceVictoryMock
+        DoGameResultNew(1, 'victory', events, ResultStrings, TestGameresult.Announces)
+        luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
+        luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
+        luaunit.assert_true(TestGameresult.AnnounceVictoryCalled)
+    end
+
+    function TestGameresult:testVictoryOtherArmy()
+        function AnnounceVictoryMock(armyID, Resultstring)
+            luaunit.assert_equals(Resultstring, OtherArmyResultStrings.victory)
+        end
+        TestGameresult.Announces.AnnounceVictory = AnnounceVictoryMock
+        DoGameResultNew(2, 'victory', events, ResultStrings, TestGameresult.Announces)
+        luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
+        luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
+        luaunit.assert_true(TestGameresult.AnnounceVictoryCalled)
     end
 
 

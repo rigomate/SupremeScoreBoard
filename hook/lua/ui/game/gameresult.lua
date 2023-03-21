@@ -64,7 +64,7 @@ function DoGameResult(armyID, result)
     local split = str.split(result, ' ')
     local resultsplitted = tostring(split[1]) 
 
-    -- need to decouple DoGameResultNew for unit testing
+    -- need this to decouple DoGameResultNew for unit testing
     ResultStrings = {}
     ResultStrings.OtherArmy = OtherArmyResultStrings
     ResultStrings.MyArmy = MyArmyResultStrings
