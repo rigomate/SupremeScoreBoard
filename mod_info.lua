@@ -1,6 +1,6 @@
 name         = "Supreme Score Board2"
-version      = 9
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0090"
+version      = 10
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0100"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
@@ -8,7 +8,7 @@ description  = "Difference to normal Supreme Score Board: Kill notifications wor
 
 icon         = "/mods/SupremeScoreBoard2/mod_icon.png"
 url          = "http://forums.faforever.com/viewtopic.php?f=41&t=10887"
-github       = "https://github.com/FA-mods/SupremeScoreBoard"
+github       = "https://github.com/rigomate/SupremeScoreBoard"
 
 selectable   = true
 enabled      = true
@@ -69,7 +69,17 @@ after = {
 
 history = [[
 
-### Version 7 - March 18, 2023
+### Version 10 - March 21, 2023
+- Renamed to SSB2 ingame
+- Added kill notifications for games between patch 3741 and 3756, which tells that someone died, without naming a killer or reason
+
+### Version 9 - March 19, 2023
+- Draws can be seen
+
+### Version 8 - March 18, 2023
+- Fixed kill notification, which got broken after game patch 3741, starting from game patch 3756 it will work again
+
+### Version 8 - March 18, 2023
 - Fixed kill notification, which got broken after game patch 3741, starting from game patch 3756 it will work again
 
 ### Version 4-6 - November 12, 2020
