@@ -1,6 +1,6 @@
 name         = "Supreme Score Board2"
-version      = 11
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0110"
+version      = 12
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0120"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
@@ -68,6 +68,9 @@ after = {
 -]] 
 
 history = [[
+
+### Version 12 - March 22, 2023
+- Fix: Unit count and unit cap are shown
 
 ### Version 11 - March 21, 2023
 - Fix: Score is shown at the end of the game
