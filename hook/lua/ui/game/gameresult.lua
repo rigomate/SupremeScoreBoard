@@ -84,6 +84,9 @@ function DoGameResult(armyID, result)
     else
         log.Trace('Version is = ' .. version .. ' : therefore kill notification is uncertain')
         DoGameResultBetween(armyID, resultsplitted)
+        if (resultsplitted == 'victory') then
+            orgDoGameResult(armyID, result)
+        end
     end
 end
 
