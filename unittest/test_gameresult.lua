@@ -23,6 +23,7 @@ local MyArmyResultStrings = {
 }
 
 gameresult = require('../modules/gameresultnew')
+updateevent = require('../modules/score_events')
 
 --mock function
 function AnnounceDraw(armyID, message, killerId)
@@ -52,10 +53,13 @@ Announces.AnnounceVictory      = AnnounceVictory
 
 
 -- prepare sync
-
-local events = { }
-local acuDestroyed = { }
+local sync = {}
+local events = sync.Events or { }
+sync.Events = events
+local acuDestroyed = events.ACUDestroyed or { }
 events.ACUDestroyed = acuDestroyed
+
+
 
 -- sync the event
 table.insert(acuDestroyed, {
@@ -63,11 +67,28 @@ table.insert(acuDestroyed, {
     InstigatorArmy = 2,
     KilledArmy = 1
 })
+
+UpdateEvents(sync.Events)
+
+local events = { }
+sync.Events = events
+local acuDestroyed = events.ACUDestroyed or { }
+events.ACUDestroyed = acuDestroyed
+
 table.insert(acuDestroyed, {
     Timestamp = 234,
     InstigatorArmy = 3,
     KilledArmy = 2
 })
+
+UpdateEvents(sync.Events)
+
+
+local events = { }
+sync.Events = events
+local acuDestroyed = events.ACUDestroyed or { }
+events.ACUDestroyed = acuDestroyed
+
 table.insert(acuDestroyed, {
     Timestamp = 234,
     InstigatorArmy = 10,
@@ -78,6 +99,8 @@ table.insert(acuDestroyed, {
     InstigatorArmy = 11,
     KilledArmy = 10
 })
+
+UpdateEvents(sync.Events)
 
 
 
@@ -109,7 +132,7 @@ TestGameresult = {}
     end
 
     function TestGameresult:testCheckIfVictoryExits()
-        DoGameResultNew(1, 'victory', events, ResultStrings, TestGameresult.Announces)
+        DoGameResultNew(1, 'victory', CurrentEvents, ResultStrings, TestGameresult.Announces)
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
     end
@@ -122,27 +145,27 @@ TestGameresult = {}
 
 
     function TestGameresult:testCheckDefeat2()
-        DoGameResultNew(2, 'defeat', events, ResultStrings, TestGameresult.Announces)
+        DoGameResultNew(2, 'defeat', CurrentEvents, ResultStrings, TestGameresult.Announces)
 
         luaunit.assert_true(TestGameresult.AnnounceDeathCalled)
     end
 
     function TestGameresult:testDraw()
-        DoGameResultNew(10, 'defeat', events, ResultStrings, TestGameresult.Announces)
+        DoGameResultNew(10, 'defeat', CurrentEvents, ResultStrings, TestGameresult.Announces)
 
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_true(TestGameresult.AnnounceDrawCalled)
     end
 
     function TestGameresult:testDrawOnlyOnce()
-        DoGameResultNew(10, 'defeat', events, ResultStrings, TestGameresult.Announces)
+        DoGameResultNew(10, 'defeat', CurrentEvents, ResultStrings, TestGameresult.Announces)
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_true(TestGameresult.AnnounceDrawCalled)
     
         TestGameresult.AnnounceDeathCalled = false
         TestGameresult.AnnounceDrawCalled = false
     
-        DoGameResultNew(11, 'defeat', events, ResultStrings, TestGameresult.Announces)
+        DoGameResultNew(11, 'defeat', CurrentEvents, ResultStrings, TestGameresult.Announces)
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
     end
@@ -152,7 +175,7 @@ TestGameresult = {}
             luaunit.assert_equals(Resultstring, MyArmyResultStrings.victory)
         end
         TestGameresult.Announces.AnnounceVictory = AnnounceVictoryMock
-        DoGameResultNew(1, 'victory', events, ResultStrings, TestGameresult.Announces)
+        DoGameResultNew(1, 'victory', CurrentEvents, ResultStrings, TestGameresult.Announces)
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
         luaunit.assert_true(TestGameresult.AnnounceVictoryCalled)
@@ -163,7 +186,7 @@ TestGameresult = {}
             luaunit.assert_equals(Resultstring, OtherArmyResultStrings.victory)
         end
         TestGameresult.Announces.AnnounceVictory = AnnounceVictoryMock
-        DoGameResultNew(2, 'victory', events, ResultStrings, TestGameresult.Announces)
+        DoGameResultNew(2, 'victory', CurrentEvents, ResultStrings, TestGameresult.Announces)
         luaunit.assert_false(TestGameresult.AnnounceDeathCalled)
         luaunit.assert_false(TestGameresult.AnnounceDrawCalled)
         luaunit.assert_true(TestGameresult.AnnounceVictoryCalled)
@@ -173,6 +196,7 @@ TestGameresult = {}
     function TestGameresult:tearDown()
     end
 
+--separate test, which is not using the global sync structure
 function testCheckNoKillSyncedThereforeSuicide()
     -- reset these
     acuDestroyed = {} 
@@ -198,6 +222,7 @@ function testCheckNoKillSyncedThereforeSuicide()
     luaunit.assert_false(AnnounceDrawCalled)
 end
 
+-- test, which is not using the global sync structure
 function testCheckKillthenDraw()
     -- reset these
     acuDestroyed = {} 
@@ -237,7 +262,7 @@ function testCheckKillthenDraw()
         KilledArmy = 10
     })
 
-    DoGameResultNew(11, 'defeat', events, ResultStrings, Announces)
+    DoGameResultNew(11, 'defeat', CurrentEvents, ResultStrings, Announces)
 
     luaunit.assert_false(AnnounceDeathCalled)
     luaunit.assert_true(AnnounceDrawCalled)

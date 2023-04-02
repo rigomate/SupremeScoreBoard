@@ -1,10 +1,20 @@
 local modPath = '/mods/SupremeScoreBoard2/'
 local modScripts  = modPath..'modules/'
-local str  = import(modScripts..'ext.strings.lua')
-local log  = import(modScripts..'ext.logging.lua')
-local UIUtil = import('/lua/ui/uiutil.lua')
 
 CurrentEvents = {}
+CurrentEvents.ACUEntersTransporter = {}
+CurrentEvents.ACUDestroyed = {}
+
 function UpdateEvents(newEvents)
-    CurrentEvents = newEvents
+    -- insert every element
+    if newEvents.ACUEntersTransporter then
+        for i,acu in pairs(newEvents.ACUEntersTransporter) do
+            table.insert(CurrentEvents.ACUEntersTransporter, acu)
+        end
+    end
+    if newEvents.ACUDestroyed then
+        for i,acu in pairs(newEvents.ACUDestroyed) do
+            table.insert(CurrentEvents.ACUDestroyed, acu)
+        end
+    end
 end

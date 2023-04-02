@@ -37,6 +37,7 @@ conflicts   = {
     "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0080",  -- old SSB
     "HUSSAR-pl-a1e2-c4t4-scfa-SETmod-v0100",
     "HUSSAR-PL-a1e2-c4t4-scfa-SUImod-v0900", -- old SUI v0.9
+    "8c28a269-8655-4639-8e54-3d311fc376f8", -- eco update freezes when this mod is on, you do not want to have it anymore
     }
 before = { }
 after = { 
