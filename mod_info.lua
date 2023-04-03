@@ -70,6 +70,9 @@ after = {
 
 history = [[
 
+### Version 13 - April 03, 2023
+- Fix: All kil events get properly logged, draws will not be missed
+
 ### Version 12 - March 22, 2023
 - Fix: Unit count and unit cap are shown
 
