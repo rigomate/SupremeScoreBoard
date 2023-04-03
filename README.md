@@ -38,6 +38,9 @@ C:\Users\USER_NAME\Documents\My Games\Gas Powered Games\Supreme Commander Forged
 The is a very permissive license for software and other scientific or artistic works that offers a great degree of freedom. In fact, it is probably the best license out there. 
 It is free to do what ever your like :D
 
+Basically http://www.wtfpl.net/ with a single exception clause:
+**Original author: HUSSAR, free to re-use code as long as you credit HUSSAR in the modified source code**
+
 ## Contribution
 
 All contributions are welcome, though I can't guarantee to pull all of them in. If you want to contribute, please create a separate branch and a pull request with your changes. 
