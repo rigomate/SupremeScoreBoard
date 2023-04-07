@@ -1,4 +1,4 @@
-# SupremeScoreBoard (UI) mod
+# SupremeScoreBoard2 (UI) mod
 
 This repository contains implementation of a mod for Supreme Commander FA game. This mod changes only User Interface of the game and it can be used in multiplayer games withouth affecting other players. This mod is fully compatiable with Forged Alliance Forever.
 
@@ -20,18 +20,18 @@ Download the **Supreme Score Board** mod from the vault in <a href="https://www.
 
 or
 
-1. Open <a href="https://github.com/FA-mods/SupremeScoreBoard/tree/master/versions" target="_blank">versions</a> folder and download a zip file with latest version of SupremeScoreBoard mod.
+1. Open <a href="https://github.com/rigomate/SupremeScoreBoard" target="_blank">versions</a> folder and download a zip file with latest version of SupremeScoreBoard2 mod.
 2. Open your "Mods" folder for Supreme Commander FA game, e.g.
 
 C:\Users\USER_NAME\Documents\My Games\Gas Powered Games\Supreme Commander Forged Alliance\Mods\
 
-3. Delete the SupremeScoreBoard folder (if it exists). This will prevent conflicts between older version of this mod.
+3. Delete the SupremeScoreBoard2 folder (if it exists). This will prevent conflicts between older version of this mod.
 4. Unzip the downloaded zip file to your "Mods" folder 
 5. Make sure mod_info.lua file is in this folder and not in subfolders of:
 
-C:\Users\USER_NAME\Documents\My Games\Gas Powered Games\Supreme Commander Forged Alliance\Mods\SupremeScoreBoard\
+C:\Users\USER_NAME\Documents\My Games\Gas Powered Games\Supreme Commander Forged Alliance\Mods\SupremeScoreBoard2\
 
-6. Enable SupremeScoreBoard mod in Mod Manager (in Supreme Commander FA game)
+6. Enable SupremeScoreBoard2 mod in Mod Manager (in Supreme Commander FA game)
 
 ## License
 
@@ -47,9 +47,34 @@ All contributions are welcome, though I can't guarantee to pull all of them in. 
 Thanks in advance.
 
 ## Contact Info
-Shoot me a message on <a href="http://forums.faforever.com/memberlist.php?mode=viewprofile&u=9827" target="_blank">FAF forum </a> or <a href="https://www.faforever.com/client" target="_blank"> FAF client's</a> chat. Also, you can find me on <a href="faforever.slack.com" target="_blank">FA Forever Slack channel</a> or <a href="https://discord.gg/hgvj6Af" target="_blank">FAF Discord</a>. My user name is "HUSSAR"
+Create an issue or Pull Request to reach me with ideas
 
 ## History
+
+### Version 13 - April 03, 2023
+- Fix: All kil events get properly logged, draws will not be missed
+
+### Version 12 - March 22, 2023
+- Fix: Unit count and unit cap are shown
+
+### Version 11 - March 21, 2023
+- Fix: Score is shown at the end of the game
+
+### Version 10 - March 21, 2023
+- Renamed to SSB2 ingame
+- Added kill notifications for games between patch 3741 and 3756, which tells that someone died, without naming a killer or reason
+
+### Version 9 - March 19, 2023
+- Draws can be seen
+
+### Version 8 - March 18, 2023
+- Fixed kill notification, which got broken after game patch 3741, starting from game patch 3756 it will work again
+
+### Version 8 - March 18, 2023
+- Fixed kill notification, which got broken after game patch 3741, starting from game patch 3756 it will work again
+
+### Version 7 - March 18, 2023
+- skipped release
 
 ### Version 4-6 - November 12, 2020
 - added economy income of allied players in game session
