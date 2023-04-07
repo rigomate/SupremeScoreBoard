@@ -312,7 +312,7 @@ function InitializeStats()
     Columns.Mass = {}
     Columns.Mass.Index    = 1
     Columns.Mass.Active   = 'eco.massIncome'
-    Columns.Mass.Keys     = { 'eco.massIncome', 'eco.massReclaim'} --, 'eco.massTotal'}
+    Columns.Mass.Keys     = { 'eco.massIncome', 'eco.massReclaim', 'eco.massStored'} --, 'eco.massTotal'}
     
     Columns.Engy = {}
     Columns.Engy.Index    = 1
@@ -1056,10 +1056,10 @@ function CreateSortLine(armyID)
         Tooltip.AddControlTooltip(sortby.massReclaim, str.tooltip('eco.massReclaim'))
    
         position = position + iconSize + 1
-        sortby.massTotal = CreateSortBoxForEcoColumn(sortby,'eco.massTotal', true)
+        sortby.massTotal = CreateSortBoxForEcoColumn(sortby,'eco.massStored', true)
         LayoutHelpers.AtRightIn(sortby.massTotal, sortby, position)
         LayoutHelpers.AtVerticalCenterIn(sortby.massTotal, sortby)
-        Tooltip.AddControlTooltip(sortby.massTotal, str.tooltip('eco.massTotal'))
+        Tooltip.AddControlTooltip(sortby.massTotal, str.tooltip('eco.massStored'))
       
         -- ================================================
         -- create sort boxes for energy column
@@ -1858,10 +1858,11 @@ function UpdatePlayerStats(armyID, armies, scoreData)
     -- for dead/alive players, get only some score info 
     player.score = num.init(scoreData.general.score)
     -- get player's eco and initialize it to zero if nil score
-    player.eco.massTotal = num.init(scoreData.resources.massin.total)
-    player.eco.massSpent = num.init(scoreData.resources.massout.total)
-    player.eco.engyTotal = num.init(scoreData.resources.energyin.total)
-    player.eco.engySpent = num.init(scoreData.resources.energyout.total)
+    player.eco.massTotal  = num.init(scoreData.resources.massin.total)
+    player.eco.massStored = num.init(scoreData.resources.storage.storedMass)
+    player.eco.massSpent  = num.init(scoreData.resources.massout.total)
+    player.eco.engyTotal  = num.init(scoreData.resources.energyin.total)
+    player.eco.engySpent  = num.init(scoreData.resources.energyout.total)
 
     -- FIX an issue reported by Gyle due to changes in structure of FAF score data
     -- checking if reclaimed mass is store in new or old score data structure
@@ -1957,6 +1958,7 @@ function UpdatePlayerStats(armyID, armies, scoreData)
     if player.score > 0 then Columns.Exists['score'] = true end
     if player.eco.massReclaim > 0 then Columns.Exists['eco.massReclaim'] = true end
     if player.eco.massTotal > 0 then Columns.Exists['eco.massTotal'] = true end
+    if player.eco.massStored > 0 then Columns.Exists['eco.massStored'] = true end
     if player.eco.massIncome > 0 then Columns.Exists['eco.massIncome'] = true end
     if player.eco.engyTotal > 0 then Columns.Exists['eco.engyTotal'] = true end
     if player.eco.engyReclaim > 0 then Columns.Exists['eco.engyReclaim'] = true end
@@ -1988,6 +1990,7 @@ function UpdateTeamStats(team, player)
     team.score = team.score + player.score
     
     team.eco.massTotal   = team.eco.massTotal   + player.eco.massTotal
+    team.eco.massStored  = team.eco.massStored  + player.eco.massStored
     team.eco.massSpent   = team.eco.massSpent   + player.eco.massSpent
     team.eco.engyTotal   = team.eco.engyTotal   + player.eco.engyTotal
     team.eco.engySpent   = team.eco.engySpent   + player.eco.engySpent

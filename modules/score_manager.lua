@@ -213,6 +213,7 @@ function GetArmyTableEco()
     local eco = {}
     eco.massIncome  = 0
     eco.massTotal   = 0
+    eco.massStored  = 0
     eco.massSpent   = 0
     eco.massReclaim = 0
      

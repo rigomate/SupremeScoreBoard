@@ -103,6 +103,8 @@ function initalize()
     locals['eco.massIncome_info'] = 'This column shows current Mass Income from mass extractors and RAS upgrades' .. columnActions
     locals['eco.massTotal'] = 'Mass Total'
     locals['eco.massTotal_info'] = 'This column shows current Mass Total collected by extractors and reclaimed' .. columnActions
+    locals['eco.massStored'] = 'Mass Stored'
+    locals['eco.massStored_info'] = 'This column shows the Mass stored' .. columnActions
     locals['eco.massProduced'] = 'Mass Produced'
     locals['eco.massProduced_info'] = 'This column shows Mass Produced (excluding Reclaim)' .. columnActions
     locals['eco.massReclaim'] = 'Mass Reclaim'
