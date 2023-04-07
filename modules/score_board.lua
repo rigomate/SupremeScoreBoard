@@ -845,10 +845,14 @@ function CreateArmyLine(armyID, army)
         group.HandleEvent = function(self, event)
             if event.Type == 'MouseEnter' then
                 alliesInfoShowStorage = true
-                alliesInfo:SetText("Storage of Allies")
+                if alliesInfo.SetText ~= nil then
+                    alliesInfo:SetText("Storage of Allies")
+                end
             elseif event.Type == 'MouseExit' then
                 alliesInfoShowStorage = false
-                alliesInfo:SetText("Income of Allies")
+                if alliesInfo.SetText ~= nil then
+                    alliesInfo:SetText("Income of Allies")
+                end
             end
         end
     end
