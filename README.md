@@ -51,6 +51,9 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 14 - April 07, 2023
+- Feature: Show Mass Sorage instead of showing Total Mass twice
+
 ### Version 13 - April 03, 2023
 - Fix: All kil events get properly logged, draws will not be missed
 
