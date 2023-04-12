@@ -681,7 +681,7 @@ function CreateArmyLine(armyID, army)
                 Diplomacy.SendResource(self.armyID, 0, 50) -- Share 50% energy
             end 
         end 
-        Tooltip.AddControlTooltip(group.shareEngyIcon, str.tooltip('share_engy'))
+        --Tooltip.AddControlTooltip(group.shareEngyIcon, str.tooltip('share_engy'))
         
         -- UI for showing allied players' energy stats
         position = position + iconSize + 3
@@ -707,7 +707,7 @@ function CreateArmyLine(armyID, army)
                 Diplomacy.SendResource(self.armyID, 50, 0) -- Share 50% mass
             end
         end
-        Tooltip.AddControlTooltip(group.shareMassIcon, str.tooltip('share_mass'))
+        --Tooltip.AddControlTooltip(group.shareMassIcon, str.tooltip('share_mass'))
 
         -- UI for showing allied players' mass stats
         position = position + iconSize + 2
@@ -716,6 +716,7 @@ function CreateArmyLine(armyID, army)
         group.massColumn:SetColor(textColorMass)
         LayoutHelpers.AtRightIn(group.massColumn, group, position)
         LayoutHelpers.AtVerticalCenterIn(group.massColumn, group)
+
     end
 
     -- create score data column
@@ -742,6 +743,24 @@ function CreateArmyLine(armyID, army)
         group.nameColumn.Right:Set(group.scoreColumn.Left)
         --group.nameColumn.Right:Set(position - sw)
         group.nameColumn:SetClipToWidth(true)
+    end
+
+    if (isTeamArmy and not sessionReplay) then
+        -- UI for showing total energy in storage
+        position = position + 70
+        group.engyStorageColumn = UIUtil.CreateText(group, '0', fontSize, fontName)
+        group.engyStorageColumn:DisableHitTest()
+        group.engyStorageColumn:SetColor(textColorEngy)
+        LayoutHelpers.AtRightIn(group.engyStorageColumn, group, position)
+        LayoutHelpers.AtVerticalCenterIn(group.engyStorageColumn, group)    
+
+        -- UI for showing total mass in storage
+        position = position + 40
+        group.massStorageColumn = UIUtil.CreateText(group, '0', fontSize, fontName)
+        group.massStorageColumn:DisableHitTest()
+        group.massStorageColumn:SetColor(textColorMass)
+        LayoutHelpers.AtRightIn(group.massStorageColumn, group, position)
+        LayoutHelpers.AtVerticalCenterIn(group.massStorageColumn, group)    
     end
     
     -- TODO figure out if it is possible to ACCESS and show info about allied players in Sim mod!
@@ -1568,7 +1587,7 @@ function GetStatsForArmy(army, column, useFormatting)
 end
 -- create team for index or player's army
 function CreateTeam(armyIndex, armies)
-    --log.Trace('InitializeStats()... creating team for army='..armyIndex)
+    log.Trace('InitializeStats()... creating team for army='..armyIndex)
      
     local team = {} 
     team.key = ''
@@ -1998,6 +2017,7 @@ function UpdateTeamStats(team, player)
     team.eco.massSpent   = team.eco.massSpent   + player.eco.massSpent
     team.eco.engyTotal   = team.eco.engyTotal   + player.eco.engyTotal
     team.eco.engySpent   = team.eco.engySpent   + player.eco.engySpent
+    team.eco.engyStored  = team.eco.engyStored  + player.eco.engyStored
     team.eco.massReclaim = team.eco.massReclaim + player.eco.massReclaim
     team.eco.engyReclaim = team.eco.engyReclaim + player.eco.engyReclaim
     -- update team's kills Stats
@@ -2332,7 +2352,18 @@ function _OnBeat()
            if line.isArmyLine and data then
                player = UpdatePlayerStats(armyID, armies, data)
            end
-               
+           
+           local teamId = Stats.armies[armyID].teamID
+           local team = Stats.teams[teamId]
+           --if (data) then
+           -- if (line.massStorageColumn.SetText ~= nil) then
+           --     if (team.eco.massStored ~= nil) then
+           --         val = num.frmt(team.eco.massStored)
+           --         line.massStorageColumn:SetText(val)
+           --     end
+           --    end    
+           --end               
+
            if line.dead then 
                if sessionReplay and focusedArmyID == armyID then
                    UpdateUnitsInfo(0, 0) 
@@ -2439,6 +2470,19 @@ function _OnBeat()
                -- update army's score
                if team.score <= -1 then
                   line.scoreColumn:SetText(LOC("<LOC _Playing>Playing"))
+                  if (line.massStorageColumn.SetText ~= nil) then
+                    if (team.eco.massStored ~= nil) then
+                        val = num.frmt(team.eco.massStored)
+                        line.massStorageColumn:SetText(val)
+                    end
+                   end    
+                   if (line.engyStorageColumn.SetText ~= nil) then
+                    if (team.eco.engyStored ~= nil) then
+                        val = num.frmt(team.eco.engyStored)
+                        line.engyStorageColumn:SetText(val)
+                    end
+                   end    
+
                else
                   line.scoreColumn:SetText(' '..GetStatsForArmy(team, Columns.Score.Active))
                end 
