@@ -59,6 +59,16 @@ table.insert(options.ui.items,
     })
 table.insert(options.ui.items,
     {
+        tip     = "Specify how long the auto-toggle should be overridden when clicking it manually. \n 0 Means that a manual click will keep the Auto-Toggle off \n \n Replay Session only",
+        title   = "SSB Auto-Toggle Override (sec)", 
+        key     = 'SSB_Auto_Toggle_Override',
+        type    = 'slider',
+        default = 60,
+        custom  = { min = 30, max = 180, inc = 10, },
+        set     = SetOptions,
+    })
+table.insert(options.ui.items,
+    {
         tip     = "Specify whether or not auto-toggle the Score Column between: \n score points and kills ratio \n \n Replay Session only",
         title   = "SSB Auto-Toggle Score Column", 
         key     = 'SSB_Auto_Toggle_Score_Column',

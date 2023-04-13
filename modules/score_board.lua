@@ -307,17 +307,17 @@ function InitializeStats()
     Columns.Score = {}
     Columns.Score.Index   = 1
     Columns.Score.Active  = 'score'
-    Columns.Score.Keys    = { 'score', 'ratio.killsToLoses'} --, 'ratio.killsToBuilt'} 
+    Columns.Score.Keys    = { 'score', 'ratio.killsToLoses'} -- 'ratio.killsToBuilt'
      
     Columns.Mass = {}
     Columns.Mass.Index    = 1
     Columns.Mass.Active   = 'eco.massIncome'
-    Columns.Mass.Keys     = { 'eco.massIncome', 'eco.massReclaim', 'eco.massStored'} --, 'eco.massTotal'}
+    Columns.Mass.Keys     = { 'eco.massIncome', 'eco.massReclaim', 'eco.massStored'}
     
     Columns.Engy = {}
     Columns.Engy.Index    = 1
     Columns.Engy.Active   = 'eco.engyIncome'
-    Columns.Engy.Keys     = { 'eco.engyIncome', 'eco.engyReclaim'}  
+    Columns.Engy.Keys     = { 'eco.engyIncome', 'eco.engyReclaim'}
      
     Columns.Units = {}
     Columns.Units.Index   = 1
@@ -327,7 +327,7 @@ function InitializeStats()
     Columns.Total = {}
     Columns.Total.Index   = 1
     Columns.Total.Active  = 'eco.massTotal'
-    Columns.Total.Keys    = { 'eco.massTotal', 'kills.mass' }
+    Columns.Total.Keys    = { 'eco.massTotal', 'kills.mass'} -- 'loses.mass'
      
 end
 
@@ -911,15 +911,42 @@ function CreateSortBoxBase(group, column, customPath)
     return checkbox
 end
 
+local AutoToggleMassCoolDownTime = 0
+local AutoToggleMassShouldBeDone = false
+
+local AutoToggleEngyCoolDownTime = 0
+local AutoToggleEngyShouldBeDone = false
+
+local AutoToggleUnitsCoolDownTime = 0
+local AutoToggleUnitsShouldBeDone = false
+
+local AutoToggleScoreCoolDownTime = 0
+local AutoToggleScoreShouldBeDone = false
+
+local AutoToggleTotalCoolDownTime = 0
+local AutoToggleTotalShouldBeDone = false
+
 function CreateSortBoxForEcoColumn(group, column, isMass)
     local checkbox = CreateSortBoxBase(group, column)
 
     checkbox.OnClick = function(self, eventModifiers)
         self:ToggleCheck()
         if isMass then
+            -- if automatic toggle was on, then make sure it gets switched back on after a while
+            if GameOptions['SSB_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB_Auto_Toggle_Mass_Column'] == true then
+                AutoToggleMassShouldBeDone = true
+                AutoToggleMassCoolDownTime = GetGameTimeSeconds() + GameOptions['SSB_Auto_Toggle_Override']
+            end
+
              Columns.Mass.Active = column
              GameOptions['SSB_Auto_Toggle_Mass_Column'] = false
         else
+            -- if automatic toggle was on, then make sure it gets switched back on after a while
+            if GameOptions['SSB_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB_Auto_Toggle_Mass_Column'] == true then
+                AutoToggleEngyShouldBeDone = true
+                AutoToggleEngyCoolDownTime = GetGameTimeSeconds() + GameOptions['SSB_Auto_Toggle_Override']
+            end
+
              Columns.Engy.Active = column 
              GameOptions['SSB_Auto_Toggle_Engy_Column'] = false
         end 
@@ -935,7 +962,14 @@ end
 function CreateSortBoxForUnitsColumn(group, column)
     local checkbox = CreateSortBoxBase(group, column)
 
-    checkbox.OnClick = function(self, eventModifiers) 
+    checkbox.OnClick = function(self, eventModifiers)
+
+        if GameOptions['SSB_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB_Auto_Toggle_Units_Column'] == true then
+            AutoToggleUnitsShouldBeDone = true
+            AutoToggleUnitsCoolDownTime = GetGameTimeSeconds() + GameOptions['SSB_Auto_Toggle_Override']
+        end
+
+    
         Columns.Units.Active = column 
         GameOptions['SSB_Auto_Toggle_Units_Column'] = false
         if eventModifiers.Right then 
@@ -950,6 +984,12 @@ function CreateSortBoxForScoreColumn(group, column)
     local checkbox = CreateSortBoxBase(group, column)
 
     checkbox.OnClick = function(self, eventModifiers)
+
+        if GameOptions['SSB_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB_Auto_Toggle_Score_Column'] == true then
+            AutoToggleScoreShouldBeDone = true
+            AutoToggleScoreCoolDownTime = GetGameTimeSeconds() + GameOptions['SSB_Auto_Toggle_Override']
+        end
+
         Columns.Score.Active = column 
         GameOptions['SSB_Auto_Toggle_Score_Column'] = false
         if eventModifiers.Right then 
@@ -990,6 +1030,12 @@ function CreateSortBoxForTotalColumn(group, column)
     local checkbox = CreateSortBoxBase(group, column)
 
     checkbox.OnClick = function(self, eventModifiers)
+
+        if GameOptions['SSB_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB_Auto_Toggle_Total_Column'] == true then
+            AutoToggleTotalShouldBeDone = true
+            AutoToggleTotalCoolDownTime = GetGameTimeSeconds() + GameOptions['SSB_Auto_Toggle_Override']
+        end
+
         Columns.Total.Active = column 
         GameOptions['SSB_Auto_Toggle_Total_Column'] = false
         if eventModifiers.Right then 
@@ -2006,6 +2052,8 @@ function UpdatePlayerStats(armyID, armies, scoreData)
     if player.units.land > 0 then Columns.Exists['units.land'] = true end
     if player.units.navy > 0 then Columns.Exists['units.navy'] = true end
     if player.units.air > 0 then Columns.Exists['units.air'] = true end
+    if player.kills.mass > 0 then Columns.Exists['kills.mass'] = true end
+    if player.loses.mass > 0 then Columns.Exists['loses.mass'] = true end
 
     local team = Stats.teams[player.teamID]
     UpdateTeamStats(team, player)
@@ -2541,6 +2589,22 @@ local switchTime = 0
 
 function SwitchColumns()
     local gameTime = GetGameTimeSeconds()
+
+    if AutoToggleMassShouldBeDone == true and AutoToggleMassCoolDownTime < gameTime then
+        GameOptions['SSB_Auto_Toggle_Mass_Column'] = true
+    end
+    if AutoToggleEngyShouldBeDone == true and AutoToggleEngyCoolDownTime < gameTime then
+        GameOptions['SSB_Auto_Toggle_Engy_Column'] = true
+    end
+    if AutoToggleUnitsShouldBeDone == true and AutoToggleUnitsCoolDownTime < gameTime then
+        GameOptions['SSB_Auto_Toggle_Units_Column'] = true
+    end
+    if AutoToggleScoreShouldBeDone == true and AutoToggleScoreCoolDownTime < gameTime then
+        GameOptions['SSB_Auto_Toggle_Score_Column'] = true
+    end
+    if AutoToggleTotalShouldBeDone == true and AutoToggleTotalCoolDownTime < gameTime then
+        GameOptions['SSB_Auto_Toggle_Total_Column'] = true
+    end
 
     local switchInterval = GameOptions['SSB_Auto_Toggle_Interval'] or 10 -- in seconds
     if switchInterval > 1 and switchInterval <= gameTime - switchTime then
