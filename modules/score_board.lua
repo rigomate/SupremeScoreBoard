@@ -681,7 +681,7 @@ function CreateArmyLine(armyID, army)
                 Diplomacy.SendResource(self.armyID, 0, 50) -- Share 50% energy
             end 
         end 
-        --Tooltip.AddControlTooltip(group.shareEngyIcon, str.tooltip('share_engy'))
+        Tooltip.AddControlTooltip(group.shareEngyIcon, str.tooltip('share_engy'))
         
         -- UI for showing allied players' energy stats
         position = position + iconSize + 3
@@ -707,7 +707,7 @@ function CreateArmyLine(armyID, army)
                 Diplomacy.SendResource(self.armyID, 50, 0) -- Share 50% mass
             end
         end
-        --Tooltip.AddControlTooltip(group.shareMassIcon, str.tooltip('share_mass'))
+        Tooltip.AddControlTooltip(group.shareMassIcon, str.tooltip('share_mass'))
 
         -- UI for showing allied players' mass stats
         position = position + iconSize + 2
@@ -747,7 +747,15 @@ function CreateArmyLine(armyID, army)
 
     if (isTeamArmy and not sessionReplay) then
         -- UI for showing total energy in storage
-        position = position + 70
+        position = iconSize * 2
+        position = position + iconSize + 5
+
+        group.StorageEngyIcon = CreateInfoIcon(group, 'eco.engyStored.dds')
+        LayoutHelpers.AtRightIn(group.StorageEngyIcon, group, position)
+        LayoutHelpers.AtVerticalCenterIn(group.StorageEngyIcon, group)
+        SetIconSize(group.StorageEngyIcon)
+
+        position = position + iconSize + 3
         group.engyStorageColumn = UIUtil.CreateText(group, '0', fontSize, fontName)
         group.engyStorageColumn:DisableHitTest()
         group.engyStorageColumn:SetColor(textColorEngy)
@@ -755,7 +763,13 @@ function CreateArmyLine(armyID, army)
         LayoutHelpers.AtVerticalCenterIn(group.engyStorageColumn, group)    
 
         -- UI for showing total mass in storage
-        position = position + 40
+        position = position + 30
+        group.StorageMassIcon = CreateInfoIcon(group, 'eco.massStored.dds')
+        LayoutHelpers.AtRightIn(group.StorageMassIcon, group, position)
+        LayoutHelpers.AtVerticalCenterIn(group.StorageMassIcon, group)
+        SetIconSize(group.StorageMassIcon)
+
+        position = position + iconSize + 2
         group.massStorageColumn = UIUtil.CreateText(group, '0', fontSize, fontName)
         group.massStorageColumn:DisableHitTest()
         group.massStorageColumn:SetColor(textColorMass)
