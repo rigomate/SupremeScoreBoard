@@ -914,6 +914,7 @@ end
 local AutoToggleShouldBeDone = {}
 local AutoToggleCoolDownTime = {}
 
+-- Overrides the automatic toggling functionality for the amount of time defined in GameOptions['SSB_Auto_Toggle_Override']
 function toggleOverride(columname)
     if GameOptions['SSB_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB_Auto_Toggle_' .. columname .. '_Column'] == true then
         AutoToggleShouldBeDone[columname] = true
@@ -921,6 +922,8 @@ function toggleOverride(columname)
     end
 end
 
+-- Checks if overriding the toggle functionality should end
+-- Automatic toggling stops after the time defined in the GameOptions['SSB_Auto_Toggle_Override']
 function checkToggleOverride(columname)
     if AutoToggleShouldBeDone[columname] == nil or AutoToggleCoolDownTime == nil or AutoToggleCoolDownTime[columname] == nil then
         return
