@@ -64,7 +64,7 @@ table.insert(options.ui.items,
         key     = 'SSB_Auto_Toggle_Override',
         type    = 'slider',
         default = 60,
-        custom  = { min = 30, max = 180, inc = 10, },
+        custom  = { min = 0, max = 300, inc = 30, },
         set     = SetOptions,
     })
 table.insert(options.ui.items,
