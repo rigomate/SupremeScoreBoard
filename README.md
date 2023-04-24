@@ -51,6 +51,10 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 15 - April 24, 2023
+- Fix: Automatic toggling now works for every column
+- Feature: After clicking a column to show that, e.g mass income. The automatic toggling will start again after the time specified in the options  
+
 ### Version 14 - April 07, 2023
 - Feature: Show Mass Sorage instead of showing Total Mass twice
 
