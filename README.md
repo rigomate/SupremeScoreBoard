@@ -51,6 +51,9 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 16 - April 30, 2023
+- Adjust time settings options for auto toggle
+
 ### Version 15 - April 24, 2023
 - Fix: Automatic toggling now works for every column
 - Feature: After clicking a column to show that, e.g mass income. The automatic toggling will start again after the time specified in the options  
