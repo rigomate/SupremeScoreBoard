@@ -4,6 +4,12 @@ local modScripts  = modPath..'modules/'
 
 local log  = import(modScripts..'ext.logging.lua') 
 
+--- table_empty(t) returns true iff t has no keys/values.
+local function table_empty(t)
+    if type(t) ~= 'table' then return true end
+    return next(t) == nil
+end
+
 local orgOnSync = OnSync
 function OnSync()
     orgOnSync()
@@ -12,7 +18,7 @@ function OnSync()
      --   import('/lua/ui/game/economy.lua').TeamEco = Sync.TeamEco
     --end
     --LOG(">>>> HUSAR: " .. " OnSync... "  )
-    --LOG("SSB OnSync... " .. table.getsize(Sync) )
+    --LOG("SSB OnSync... " .. table.getn(Sync) )
 
     if Sync.SharedScore then
         log.Trace('Sync.SharedScore ... ')
@@ -40,7 +46,7 @@ function OnSync()
         import(modScripts .. 'score_events.lua').UpdateEvents(Sync.Events)
     end 
 
-    if not table.empty(Sync.Score) then
+    if not table_empty(Sync.Score) then
         import(modScripts .. 'score_board.lua').currentScores = Sync.Score
         --import('/lua/ui/game/score.lua').currentScores = Sync.Score
         --if not Sync.FullScoreSync then

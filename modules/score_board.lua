@@ -1395,16 +1395,24 @@ function GetUnitTech(bp)
 end
 function CreateInfoIconRestrictions(parent)
     local restrictions = sessionOptions.RestrictedCategories
-    local restrictionCount = table.getn(restrictions)
+    local restrictionCount = 0
+    
+    if restrictions then
+        restrictionCount = table.getn(restrictions)
+    end
+    
     local presetsCount = 0
     local unitsCount = 0
     local tooltipBody = ''
     local tooltipLines = 20
     
+    log.Trace('restrictionCount ' .. restrictionCount)
+
     if restrictionCount == 0 then 
         GameStatus.HasNoRestrictions = true
         tooltipBody = str.loc('ur_NONE')
     else
+        log.Trace('restrictionCount ' .. restrictionCount)
         log.Table(restrictions, 'restrictions')
    
         GameStatus.HasNoRestrictions = false
