@@ -1395,7 +1395,7 @@ function GetUnitTech(bp)
 end
 function CreateInfoIconRestrictions(parent)
     local restrictions = sessionOptions.RestrictedCategories
-    local restrictionCount = table.getsize(restrictions)
+    local restrictionCount = table.getn(restrictions)
     local presetsCount = 0
     local unitsCount = 0
     local tooltipBody = ''
