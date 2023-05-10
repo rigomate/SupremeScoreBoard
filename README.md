@@ -51,6 +51,9 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 17 - May 10, 2023
+- Mod works with FAF develop, it broke with FAF commit aeed1cc1d422f32f8662350f5c8a6906769e707b
+
 ### Version 16 - April 30, 2023
 - Adjust time settings options for auto toggle
 

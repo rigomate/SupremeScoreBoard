@@ -1,6 +1,6 @@
 name         = "Supreme Score Board2"
-version      = 16
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0160"
+version      = 17
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0170"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
@@ -69,6 +69,9 @@ after = {
 -]] 
 
 history = [[
+
+### Version 17 - May 10, 2023
+- Mod works with FAF develop, it broke with FAF commit aeed1cc1d422f32f8662350f5c8a6906769e707b
 
 ### Version 16 - April 30, 2023
 - Adjust time settings options for auto toggle
