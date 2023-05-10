@@ -135,7 +135,7 @@ Colors[cid] = {armyColor = 'ff616d7e', textColor = 'ff99a3b0'} cid=cid+1 --#ff61
 Colors[cid] = {armyColor = 'ff131cd3', textColor = 'FF4848DC'} cid=cid+1 --#ff131cd3 #FF4848DC  dark UEF blue (old)
 Colors[cid] = {armyColor = 'FF2929e1', textColor = 'FF4848DC'} cid=cid+1 --#FF2929e1 #FF4848DC  dark UEF blue (new)
 
---WARN('SSB color fix Colors=' .. table.getsize(Colors))
+--WARN('SSB color fix Colors=' .. table.getn(Colors))
 
 
 -- initializes Stats to store info about players' armies and aggregated armies (teams)
@@ -1915,7 +1915,7 @@ end
 
 function UpdatePlayerStats(armyID, armies, scoreData)
     local player = Stats.armies[armyID]
-    --LOG(player.nameshort  .. ' units.bps = ' .. table.getsize(player.units.bps))
+    --LOG(player.nameshort  .. ' units.bps = ' .. table.getn(player.units.bps))
 
     if player == nil then
         log.Error('UpdatePlayerStats player is nil for armyID: '..armyID )
@@ -2358,7 +2358,7 @@ function _OnBeat()
     --TODO-FAF remove
     --local scoreData = import('/lua/ui/game/scoreaccum.lua').GetScoreData()
     --local scoreData = import(modPath .. 'modules/score_manager.lua').GetScoreData()
-    --LOG('SSB OnBeat... ' .. table.getsize(currentScores))
+    --LOG('SSB OnBeat... ' .. table.getn(currentScores))
 
     UpdateTimer()
     --and sessionReplay

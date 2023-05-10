@@ -61,7 +61,7 @@ function RunTest()
 end
 
 function table_empty_ORG(t)
-    return table.getsize(t) == 0
+    return table.getn(t) == 0
 end
 
 function table_empty_NEW(t)

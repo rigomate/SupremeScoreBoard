@@ -3,7 +3,7 @@ local modPath = '/mods/SupremeScoreBoard2/'
 
 function UpdateScoreData(newData) 
 
-  --LOG('SSB UpdateScoreData... '.. table.getsize(newData) )
+  --LOG('SSB UpdateScoreData... '.. table.getn(newData) )
 
   orgUpdateScoreData(newData)
   

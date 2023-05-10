@@ -34,7 +34,7 @@ local sessionOptions = sessionInfo.Options
 
 local scoreData = {}
 function SetScoreData(newData)
-    --LOG('SSB SetScoreData=' .. table.getsize(newData))
+    --LOG('SSB SetScoreData=' .. table.getn(newData))
     scoreData = newData --table.deepcopy(newData)
 end
 
