@@ -280,7 +280,7 @@ function InitializeStats()
     --SSB Send Notifications for Shared Energy  
     --SSB Send Notifications for Shared Units 
      
-    Stats.sortByColumnNew = GameOptions['SSB_SortBy_Column'] 
+    Stats.sortByColumnNew = GameOptions['SSB2_SortBy_Column'] 
     if not Stats.sortByColumnNew then
         Stats.sortByColumnNew = 'teamID'
         Stats.sortByColumnOld = 'score'
@@ -914,22 +914,22 @@ end
 local AutoToggleShouldBeDone = {}
 local AutoToggleCoolDownTime = {}
 
--- Overrides the automatic toggling functionality for the amount of time defined in GameOptions['SSB_Auto_Toggle_Override']
+-- Overrides the automatic toggling functionality for the amount of time defined in GameOptions['SSB2_Auto_Toggle_Override']
 function toggleOverride(columname)
-    if GameOptions['SSB_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB_Auto_Toggle_' .. columname .. '_Column'] == true then
+    if GameOptions['SSB2_Auto_Toggle_Override'] ~= 0 and GameOptions['SSB2_Auto_Toggle_' .. columname .. '_Column'] == true then
         AutoToggleShouldBeDone[columname] = true
-        AutoToggleCoolDownTime[columname] = GetGameTimeSeconds() + GameOptions['SSB_Auto_Toggle_Override']
+        AutoToggleCoolDownTime[columname] = GetGameTimeSeconds() + GameOptions['SSB2_Auto_Toggle_Override']
     end
 end
 
 -- Checks if overriding the toggle functionality should end
--- Automatic toggling stops after the time defined in the GameOptions['SSB_Auto_Toggle_Override']
+-- Automatic toggling stops after the time defined in the GameOptions['SSB2_Auto_Toggle_Override']
 function checkToggleOverride(columname)
     if AutoToggleShouldBeDone[columname] == nil or AutoToggleCoolDownTime == nil or AutoToggleCoolDownTime[columname] == nil then
         return
     end
     if AutoToggleShouldBeDone[columname] == true and AutoToggleCoolDownTime[columname] < GetGameTimeSeconds() then
-        GameOptions['SSB_Auto_Toggle_' .. columname .. '_Column'] = true
+        GameOptions['SSB2_Auto_Toggle_' .. columname .. '_Column'] = true
     end
 end
 
@@ -942,12 +942,12 @@ function CreateSortBoxForEcoColumn(group, column, isMass)
             toggleOverride('Mass')
 
              Columns.Mass.Active = column
-             GameOptions['SSB_Auto_Toggle_Mass_Column'] = false
+             GameOptions['SSB2_Auto_Toggle_Mass_Column'] = false
         else
             toggleOverride('Engy')
 
              Columns.Engy.Active = column 
-             GameOptions['SSB_Auto_Toggle_Engy_Column'] = false
+             GameOptions['SSB2_Auto_Toggle_Engy_Column'] = false
         end 
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
@@ -966,7 +966,7 @@ function CreateSortBoxForUnitsColumn(group, column)
         toggleOverride('Units')
     
         Columns.Units.Active = column 
-        GameOptions['SSB_Auto_Toggle_Units_Column'] = false
+        GameOptions['SSB2_Auto_Toggle_Units_Column'] = false
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
@@ -983,7 +983,7 @@ function CreateSortBoxForScoreColumn(group, column)
         toggleOverride('Score')
 
         Columns.Score.Active = column 
-        GameOptions['SSB_Auto_Toggle_Score_Column'] = false
+        GameOptions['SSB2_Auto_Toggle_Score_Column'] = false
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
@@ -1026,7 +1026,7 @@ function CreateSortBoxForTotalColumn(group, column)
         toggleOverride('Total')
 
         Columns.Total.Active = column 
-        GameOptions['SSB_Auto_Toggle_Total_Column'] = false
+        GameOptions['SSB2_Auto_Toggle_Total_Column'] = false
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
@@ -2008,7 +2008,7 @@ function UpdatePlayerStats(armyID, armies, scoreData)
         
         -- show announcements about built experimental units  
         if player.announcements.exp < player.units.exp and 
-           player.announcements.exp < GameOptions['SSB_NotifyThresholdFor_BuiltT4'] then
+           player.announcements.exp < GameOptions['SSB2_NotifyThresholdFor_BuiltT4'] then
            player.announcements.exp = player.units.exp
            if sessionReplay then
             
@@ -2593,11 +2593,11 @@ function SwitchColumns()
     checkToggleOverride('Score')
     checkToggleOverride('Total')
 
-    local switchInterval = GameOptions['SSB_Auto_Toggle_Interval'] or 10 -- in seconds
+    local switchInterval = GameOptions['SSB2_Auto_Toggle_Interval'] or 10 -- in seconds
     if switchInterval > 1 and switchInterval <= gameTime - switchTime then
        switchTime = gameTime
                  
-        if GameOptions['SSB_Auto_Toggle_Mass_Column']  then
+        if GameOptions['SSB2_Auto_Toggle_Mass_Column']  then
             Columns.Mass.Index = Columns.Mass.Index + 1
             if Columns.Mass.Index > tab.Size(Columns.Mass.Keys) then
                Columns.Mass.Index = 1 -- go back to first key
@@ -2609,7 +2609,7 @@ function SwitchColumns()
             end
         end
         
-        if GameOptions['SSB_Auto_Toggle_Engy_Column'] then
+        if GameOptions['SSB2_Auto_Toggle_Engy_Column'] then
             Columns.Engy.Index = Columns.Engy.Index + 1
             if Columns.Engy.Index > tab.Size(Columns.Engy.Keys) then
                Columns.Engy.Index = 1 -- go back to first key
@@ -2621,7 +2621,7 @@ function SwitchColumns()
             end 
         end
 
-        if GameOptions['SSB_Auto_Toggle_Units_Column'] then
+        if GameOptions['SSB2_Auto_Toggle_Units_Column'] then
             Columns.Units.Index = Columns.Units.Index + 1
             if Columns.Units.Index > tab.Size(Columns.Units.Keys) then
                Columns.Units.Index = 1
@@ -2633,7 +2633,7 @@ function SwitchColumns()
             end  
         end
 
-        if GameOptions['SSB_Auto_Toggle_Total_Column'] then
+        if GameOptions['SSB2_Auto_Toggle_Total_Column'] then
             Columns.Total.Index = Columns.Total.Index + 1
             if Columns.Total.Index > tab.Size(Columns.Total.Keys) then
                Columns.Total.Index = 1
@@ -2645,7 +2645,7 @@ function SwitchColumns()
             end  
         end
 
-        if GameOptions['SSB_Auto_Toggle_Score_Column'] then
+        if GameOptions['SSB2_Auto_Toggle_Score_Column'] then
             Columns.Score.Index = Columns.Score.Index + 1
             if Columns.Score.Index > tab.Size(Columns.Score.Keys) then
                Columns.Score.Index = 1
