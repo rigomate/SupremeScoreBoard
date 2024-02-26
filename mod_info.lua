@@ -1,6 +1,6 @@
 name         = "Supreme Score Board2"
-version      = 17
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0170"
+version      = 18
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0180"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
@@ -69,6 +69,10 @@ after = {
 -]] 
 
 history = [[
+
+### Version 18 - June 07, 2023
+- SSB options renamed to reset settings if switching from SSB v6.0
+- Added extra trace points to find out the reason for Gyle's bug, where the manual selecting of the columns does not work.
 
 ### Version 17 - May 10, 2023
 - Mod works with FAF develop, it broke with FAF commit aeed1cc1d422f32f8662350f5c8a6906769e707b

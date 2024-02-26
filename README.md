@@ -51,6 +51,10 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 18 - June 07, 2023
+- SSB options renamed to reset settings if switching from SSB v6.0
+- Added extra trace points to find out the reason for Gyle's bug, where the manual selecting of the columns does not work.
+
 ### Version 17 - May 10, 2023
 - Mod works with FAF develop, it broke with FAF commit aeed1cc1d422f32f8662350f5c8a6906769e707b
 
