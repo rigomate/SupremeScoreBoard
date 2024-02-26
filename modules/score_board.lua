@@ -952,7 +952,6 @@ function CreateSortBoxForEcoColumn(group, column, isMass)
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else
-            log.Trace('UpdateArmyLines '..column..' ...')
             UpdateArmyLines(column)
         end
     end
@@ -971,7 +970,6 @@ function CreateSortBoxForUnitsColumn(group, column)
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
-            log.Trace('UpdateArmyLines '..column..' ...')
             UpdateArmyLines(column)
         end
     end     
@@ -989,7 +987,6 @@ function CreateSortBoxForScoreColumn(group, column)
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
-            log.Trace('UpdateArmyLines '..column..' ...')
             UpdateArmyLines(column)
         end
     end
@@ -1003,7 +1000,6 @@ function CreateSortBoxForRatingColumn(group, column)
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
-            log.Trace('UpdateArmyLines '..column..' ...')
             UpdateArmyLines(column)
         end
     end
@@ -1017,7 +1013,6 @@ function CreateSortBoxForNameColumn(group, column, icon)
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
-            log.Trace('UpdateArmyLines '..column..' ...')
             UpdateArmyLines(column)
         end
     end
@@ -1035,7 +1030,6 @@ function CreateSortBoxForTotalColumn(group, column)
         if eventModifiers.Right then 
             SortArmyLinesBy(column)
         else --if left click
-            log.Trace('UpdateArmyLines '..column..' ...')
             UpdateArmyLines(column)
         end
     end
@@ -2219,7 +2213,7 @@ function UpdateUnitsInfo(current, cap)
     end
 end
 function UpdateArmyLines(column)
-
+    
     if not sessionReplay then return end
     -- some column sorting does not require UI updating
     if column == 'rating.actual' or
@@ -2287,8 +2281,8 @@ function UpdateArmyLines(column)
                 end
             
             --TODO units and score columns
-            else        
-                log.Trace('UpdateArmyLines not supported for: '..column..' ...')
+            --else        
+                --log.Trace('UpdateArmyLines not supported for: '..column..' ...')
             end
 
         end 
