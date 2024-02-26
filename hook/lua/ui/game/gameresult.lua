@@ -54,8 +54,14 @@ local stats = { done = false, players = {}, fallens = {}, killers = {} }
  
    
 local orgDoGameResult = DoGameResult
+local isVictoryCalled = false  -- Declare a local variable to store state
 
 function DoGameResult(armyID, result)
+    if isVictoryCalled then
+        log.Trace('Victory has been called, so redirecting to original DoGameResult function')
+        orgDoGameResult(armyID, result)
+        return
+    end
     log.Trace('armyID is = ' .. armyID .. ' result is: ' .. result)
 
     local version = import('/lua/version.lua').GetVersion()
@@ -74,19 +80,25 @@ function DoGameResult(armyID, result)
         log.Trace('Version is = ' .. version .. ' : therefore using new kill notificiation')
         local currentEvents = import(modScripts..'score_events.lua').CurrentEvents
         local DoGameResultNew = import(modScripts..'gameresultnew.lua').DoGameResultNew
-        DoGameResultNew(armyID, resultsplitted, currentEvents, ResultStrings, Announces)
         if (resultsplitted == 'victory') then
+            isVictoryCalled = true
+            log.Trace('Calling orgDoGameResult for the first time')
             orgDoGameResult(armyID, result)
+            return
         end
+        DoGameResultNew(armyID, resultsplitted, currentEvents, ResultStrings, Announces)
     elseif version < 3741 then
         log.Trace('Version is = ' .. version .. ' : therefore using old kill notification')
         DoGameResultLegacy(armyID, result)
     else
         log.Trace('Version is = ' .. version .. ' : therefore kill notification is uncertain')
-        DoGameResultBetween(armyID, resultsplitted)
         if (resultsplitted == 'victory') then
+            isVictoryCalled = true
+            log.Trace('Calling orgDoGameResult for the first time')
             orgDoGameResult(armyID, result)
+            return
         end
+        DoGameResultBetween(armyID, resultsplitted)
     end
 end
 
