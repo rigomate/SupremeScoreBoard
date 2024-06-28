@@ -97,7 +97,7 @@ function GetArmyRating(armyIndex)
     local armyName = GetArmyName(armyIndex)
     local rating = {}
     rating.actual = sessionOptions.Ratings[armyName]
-    if (rating.actual == nil or string.find(armyName,"%(AI")) then
+    if (rating.actual == nil or (rating.actual == 0 and string.find(armyName,"%(AI"))) then
         rating.base = 0
         -- AI Base Rating
             if (string.find(armyName,"AIx")) then rating.base = 500 
