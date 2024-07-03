@@ -54,6 +54,7 @@ local stats = { done = false, players = {}, fallens = {}, killers = {} }
  
    
 local orgDoGameResult = DoGameResult
+local isVictoryCalled = false  -- Declare a local variable to store state
 
 function DoGameResult(armyID, result)
     log.Trace('armyID is = ' .. armyID .. ' result is: ' .. result)
@@ -70,8 +71,9 @@ function DoGameResult(armyID, result)
     ResultStrings.OtherArmy = OtherArmyResultStrings
     ResultStrings.MyArmy = MyArmyResultStrings
 
-    -- In case of a victory the Score Dialogue needs to be shown directly from here
-    if (resultsplitted == 'victory') then
+    -- In case of a victory the Score Dialogue needs to be shown directly from here, but make sure it is only performed once
+    if (resultsplitted == 'victory' and not isVictoryCalled) then
+        isVictoryCalled = true
         -- Otherwise, do the end-of-game stuff.
         if SessionIsObservingAllowed() then
             SetFocusArmy(-1)

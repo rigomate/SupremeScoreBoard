@@ -51,6 +51,9 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 20 - July 03, 2024
+- Fix bug when Score was shown more than once at the end of game
+
 ### Version 19 - June 28, 2024
 - Fix bug when Score was not shown at the end of the game when the games was lost
 - Fix showing of AI ratings, credit to maudlin27

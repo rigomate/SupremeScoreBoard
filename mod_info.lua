@@ -1,6 +1,6 @@
 name         = "Supreme Score Board2"
-version      = 19
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0190"
+version      = 20
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0200"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
@@ -69,6 +69,9 @@ after = {
 -]] 
 
 history = [[
+
+### Version 20 - July 03, 2024
+- Fix bug when Score was shown more than once at the end of game
 
 ### Version 19 - June 28, 2024
 - Fix bug when Score was not shown at the end of the game when the games was lost
