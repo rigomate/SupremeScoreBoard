@@ -1,6 +1,6 @@
 name         = "Supreme Score Board2"
-version      = 21
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0210"
+version      = 22
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0220"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
 contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
@@ -69,6 +69,9 @@ after = {
 -]] 
 
 history = [[
+
+### Version 22 - August 14, 2026
+- messed up upload
 
 ### Version 21 - August 14, 2026
 - New Option: SSB Mass Income Rounding

@@ -51,6 +51,9 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 22 - August 14, 2026
+- messed up upload
+
 ### Version 21 - August 14, 2026
 - New Option: SSB Mass Income Rounding
 - Mass Income Rounding can be switched off to see exact values
