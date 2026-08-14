@@ -226,3 +226,15 @@ table.insert(options.ui.items,
             inc = 0,
         },
     })
+
+-- SSB Formating options
+table.insert(options.ui.items,
+    {
+        tip     = "Sets if the values for: individual and team mass income should be rounded\ntrue means that values above 1000 become like 1.1k 1.5k\n \n In case of false they will be clipped nevertheless when above 100000 otherwise it would not fit the ScoreBoard",
+        title   = "SSB Mass Income Rounding", 
+        key     = 'SSB2_MassIncome_Rounding',
+        type    = 'toggle',
+        default = true,
+        custom  = GetBooleanStates(),
+        set     = SetOptions,
+    })

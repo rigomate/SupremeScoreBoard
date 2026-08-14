@@ -1613,6 +1613,8 @@ end
 function GetStatsForArmy(army, column, useFormatting)
     -- default to army stats with formatting
     if useFormatting == nil then useFormatting = true end
+    local useRounding = true
+    if GameOptions['SSB2_MassIncome_Rounding'] ~= nil then useRounding = GameOptions['SSB2_MassIncome_Rounding'] end
     
     if army == nil then
         log.Warning('GetStatsForArmy -> army is nil and column is '..column) 
@@ -1635,6 +1637,12 @@ function GetStatsForArmy(army, column, useFormatting)
         elseif (column == 'rating.rounded' or 
                 column == 'rating.actual') then
             val = string.format("%4.0f", val)  
+        elseif (column == 'eco.massIncome' and useRounding == false) then
+            if val < 100000 then -- Values over 100000 would not fit anymore in their space
+                val = string.format("%01.0f", val)
+            else
+                val = string.format("%01.1fk", val / 1000)
+            end
         else
             val = num.frmt(val)
         end

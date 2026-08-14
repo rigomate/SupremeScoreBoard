@@ -51,6 +51,10 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 21 - August 14, 2026
+- New Option: SSB Mass Income Rounding
+- Mass Income Rounding can be switched off to see exact values
+
 ### Version 20 - July 03, 2024
 - Fix bug when Score was shown more than once at the end of game
 
