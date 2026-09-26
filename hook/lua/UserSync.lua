@@ -14,6 +14,9 @@ local orgOnSync = OnSync
 function OnSync()
     orgOnSync()
 
+    -- FA may clear mode text while processing the observer switch.
+    import('/lua/ui/game/gameresult.lua').ShowPendingScoreButton()
+
     --if Sync.TeamEco then
      --   import('/lua/ui/game/economy.lua').TeamEco = Sync.TeamEco
     --end

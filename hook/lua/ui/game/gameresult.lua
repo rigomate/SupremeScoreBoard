@@ -50,6 +50,39 @@ function OnReplayEnd()
     import('/lua/ui/game/tabs.lua').AddModeText("<LOC _Score>", function() import('/lua/ui/dialogs/score.lua').CreateDialog(true) end)
 end
  
+-- A result may request an observer switch that arrives in a later sync.
+local pendingScoreButton = nil
+
+local function QueueScoreButton(victory)
+    pendingScoreButton = {
+        victory = victory,
+        waitForObserver = SessionIsObservingAllowed() and GetFocusArmy() ~= -1,
+    }
+    if pendingScoreButton.waitForObserver then
+        SetFocusArmy(-1)
+    end
+end
+
+-- Called only after the original OnSync has processed focus changes and
+-- cleared mode text. Keep the request pending until the observer switch lands.
+function ShowPendingScoreButton()
+    if not pendingScoreButton then return end
+    if pendingScoreButton.waitForObserver and GetFocusArmy() ~= -1 then return end
+
+    local victory = pendingScoreButton.victory
+    local score = import('/lua/ui/dialogs/score.lua')
+    import('/lua/ui/game/tabs.lua').AddModeText("<LOC _Score>", function()
+        UIUtil.QuickDialog(GetFrame(0),
+            "<LOC EXITDLG_0003>Are you sure you'd like to exit?",
+            "<LOC _Yes>", function() score.CreateDialog(victory) end,
+            "<LOC _No>", nil,
+            nil, nil,
+            true,
+            {escapeButton = 2, enterButton = 1, worldCover = true})
+    end)
+    pendingScoreButton = nil
+end
+
 local stats = { done = false, players = {}, fallens = {}, killers = {} }
  
    
@@ -71,13 +104,9 @@ function DoGameResult(armyID, result)
     ResultStrings.OtherArmy = OtherArmyResultStrings
     ResultStrings.MyArmy = MyArmyResultStrings
 
-    -- In case of a victory the Score Dialogue needs to be shown directly from here, but make sure it is only performed once
+    -- Queue the Score button once when victory results arrive.
     if (resultsplitted == 'victory' and not isVictoryCalled) then
         isVictoryCalled = true
-        -- Otherwise, do the end-of-game stuff.
-        if SessionIsObservingAllowed() then
-            SetFocusArmy(-1)
-        end
         
         local victory = result == 'victory'
         log.Trace('GameResults:... ' .. tostring(result).. ' | victory = '  .. tostring(victory) )
@@ -97,16 +126,7 @@ function DoGameResult(armyID, result)
         --message = ' '.. LOC(MyArmyResultStrings[result]) .. ' '
         --tabs.TabAnnouncement('main', LOC(MyArmyResultStrings[result]))
     
-        local score = import('/lua/ui/dialogs/score.lua')
-        tabs.AddModeText("<LOC _Score>", function()
-            UIUtil.QuickDialog(GetFrame(0),
-                "<LOC EXITDLG_0003>Are you sure you'd like to exit?",
-                "<LOC _Yes>", function() score.CreateDialog(victory) end,
-                "<LOC _No>", nil,
-                nil, nil,
-                true,
-                {escapeButton = 2, enterButton = 1, worldCover = true})
-        end)
+        QueueScoreButton(victory)
         return
     end
     
@@ -252,10 +272,6 @@ function DoGameResultLegacy(armyID, result)
         return
     end
 
-    -- Otherwise, do the end-of-game stuff.
-    if SessionIsObservingAllowed() then
-       SetFocusArmy(-1)
-    end
     
     local victory = result == 'victory'
     log.Trace('GameResults:... ' .. tostring(result).. ' | victory = '  .. tostring(victory) )
@@ -275,14 +291,5 @@ function DoGameResultLegacy(armyID, result)
     --message = ' '.. LOC(MyArmyResultStrings[result]) .. ' '
     --tabs.TabAnnouncement('main', LOC(MyArmyResultStrings[result]))
 
-    local score = import('/lua/ui/dialogs/score.lua')
-    tabs.AddModeText("<LOC _Score>", function()
-        UIUtil.QuickDialog(GetFrame(0),
-            "<LOC EXITDLG_0003>Are you sure you'd like to exit?",
-            "<LOC _Yes>", function() score.CreateDialog(victory) end,
-            "<LOC _No>", nil,
-            nil, nil,
-            true,
-            {escapeButton = 2, enterButton = 1, worldCover = true})
-    end)
+    QueueScoreButton(victory)
 end
