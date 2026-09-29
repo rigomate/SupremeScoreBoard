@@ -51,6 +51,9 @@ Create an issue or Pull Request to reach me with ideas
 
 ## History
 
+### Version 25 - September 29, 2026
+- Fixed missing Score button at the end of the game
+
 ### Version 24 - August 14, 2026
 - messed up upload
 
