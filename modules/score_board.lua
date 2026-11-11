@@ -658,7 +658,7 @@ function CreateArmyLine(armyID, army)
             if eventModifiers.Right then 
                  Diplomacy.RequestUnits(self.armyID) 
              elseif eventModifiers.Shift then 
-                 Diplomacy.SendUnits(self.armyID, true) -- share all units
+                 ConExecute('SetFocusArmy '..tostring(self.armyID-1))
              elseif not eventModifiers.Shift then 
                  Diplomacy.SendUnits(self.armyID, false) -- share selected units
              end         
@@ -1741,9 +1741,15 @@ function GetMapData(sessionInfo)
         width  = (5 * math.floor(map.size.pixels.width / 256)),
         height = (5 * math.floor(map.size.pixels.height / 256))
     } 
+    -- Playable bounds can be smaller than the engine's map dimensions.
+    local areaData = Sync.NewPlayableArea
+    if areaData then
+        map.size.actual.width = (areaData[3] - areaData[1]) / 51.2
+        map.size.actual.height = (areaData[4] - areaData[2]) / 51.2
+    end
     map.size.info = '('
-    map.size.info = map.size.info..map.size.actual.width .." x " 
-    map.size.info = map.size.info..map.size.actual.height.." km)" 
+    map.size.info = map.size.info..string.format("%.1f", map.size.actual.width) .." x "
+    map.size.info = map.size.info..string.format("%.1f", map.size.actual.height).." km)"
    
     local w = map.size.pixels.width 
     local h = map.size.pixels.height 

@@ -51,7 +51,7 @@ function initalize()
     locals['share_units'] = 'Share Your Units '  
     locals['share_units_info'] = 'Transfer ownership of your units to this player. \n ' ..
     'LeftClick - selected units \n' ..
-    'LeftClick+Shift - all units \n' ..
+    'LeftClick+Shift - switch perspective to this army \n' ..
     'RightClick - request engineer \n \n' ..
     'Note that units will not be transferred if the player has reached units capacity'  
     locals['share_mass'] = 'Share Your Mass '  

@@ -33,6 +33,14 @@ C:\Users\USER_NAME\Documents\My Games\Gas Powered Games\Supreme Commander Forged
 
 6. Enable SupremeScoreBoard2 mod in Mod Manager (in Supreme Commander FA game)
 
+## Building a release
+
+Run `bash release.sh` (requires Python 3). This copies the mod metadata, icon,
+README, notes, hooks, modules, textures, previews, and unit tests into
+`release/SupremeScoreBoard2/SupremeScoreBoard2`.
+Select the **inner** `SupremeScoreBoard2` folder when uploading to FAF.
+Running the script again replaces that folder with a fresh build.
+
 ## License
 
 The is a very permissive license for software and other scientific or artistic works that offers a great degree of freedom. In fact, it is probably the best license out there. 
@@ -50,6 +58,10 @@ Thanks in advance.
 Create an issue or Pull Request to reach me with ideas
 
 ## History
+
+### Version 26 - November 11, 2026
+- Added union-control perspective switching with Shift + Left Click on an ally's unit column (Hotcheese / CheeseBerry).
+- Display playable map dimensions when available (Hotcheese).
 
 ### Version 25 - September 29, 2026
 - Fixed missing Score button at the end of the game

@@ -1,9 +1,9 @@
 name         = "Supreme Score Board2"
-version      = 25
-uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0250"
+version      = 26
+uid          = "RIGOMATE-a1e2-c4t4-scfa-ssbmod-v0260"
 author       = "HUSSAR"
 copyright    = "HUSSAR, free to re-use code as long as you credit me in your mod"
-contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate"
+contributors = "Anihilnine, Crotalus, Speed2, MaCielPL, Nojoke, Petricpwnz, Nexus_of_Reality, Col_Walter_Kurtz, PsychoBoB, BlackYps, Strogo, BenDover, Rigomate, Hotcheese, CheeseBerry"
 description  = "Difference to normal Supreme Score Board: Kill notifications work again with game version 3756 and higher. Improves score board in Game and in Replay sessions by adding team stats, stats about allies eco, sending eco to allies, killed-by notifications, stats about reclaim, kill-ratio, info about game being rated or not, and more. All Credits go to HUSSAR, who created this mod"
 
 icon         = "/mods/SupremeScoreBoard2/mod_icon.png"
@@ -69,6 +69,10 @@ after = {
 -]] 
 
 history = [[
+
+### Version 26 - November 11, 2026
+- Added union-control perspective switching with Shift + Left Click on an ally's unit column (Hotcheese / CheeseBerry).
+- Display playable map dimensions when available (Hotcheese).
 
 ### Version 25 - September 29, 2026
 - Fixed missing Score button at the end of the game
